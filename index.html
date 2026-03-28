@@ -187,8 +187,8 @@ main{padding:24px 32px 48px;max-width:1200px;position:relative;}
     <button class="nav-btn" id="nav-tools">Tools</button>
     <button class="nav-btn" id="nav-health">Health</button>
     <button class="nav-btn" id="nav-insights">Insights</button>
-    <button class="nav-btn" id="nav-planner">Plan Builder</button>
-    <button class="nav-btn" id="nav-library">Library</button>
+    <button class="nav-btn" id="nav-routines">Routines</button>
+    <button class="nav-btn" id="nav-academy">The Academy</button>
   </nav>
   <main>
     <div id="loading"><div class="loading-bar"></div></div>
@@ -201,8 +201,8 @@ main{padding:24px 32px 48px;max-width:1200px;position:relative;}
     <div id="tab-tools" class="tab"></div>
     <div id="tab-health" class="tab"></div>
     <div id="tab-insights" class="tab"></div>
-    <div id="tab-planner" class="tab"></div>
-    <div id="tab-library" class="tab"></div>
+    <div id="tab-routines" class="tab"></div>
+    <div id="tab-academy" class="tab"></div>
   </main>
 </div>
 
@@ -327,7 +327,7 @@ function doLogout() {
   document.getElementById('login-password').value = '';
   document.getElementById('login-error').textContent = '';
   document.getElementById('login-error').style.color = '#e8624a';
-  ['overview','workouts','prs','exercises','progress','heatmap','tools','health','insights','planner','library'].forEach(function(t){
+  ['overview','workouts','prs','exercises','progress','heatmap','tools','health','insights','routines','academy'].forEach(function(t){
     document.getElementById('tab-'+t).innerHTML='';
     document.getElementById('tab-'+t).classList.remove('active');
     document.getElementById('nav-'+t).classList.remove('active');
@@ -396,13 +396,13 @@ window.addEventListener('load', function() {
   }
 });
 document.getElementById('panel-close-btn').addEventListener('click',function(){document.getElementById('side-panel').classList.remove('open');});
-['overview','workouts','prs','exercises','progress','heatmap','tools','health','insights','planner','library'].forEach(function(t){
+['overview','workouts','prs','exercises','progress','heatmap','tools','health','insights','routines','academy'].forEach(function(t){
   document.getElementById('nav-'+t).addEventListener('click',function(){showTab(t);});
 });
 
 // connect handled by launchApp()
 // logout handled by doLogout()
-function showTab(name){['overview','workouts','prs','exercises','progress','heatmap','tools','health','insights','planner','library'].forEach(function(t){document.getElementById('tab-'+t).classList.remove('active');document.getElementById('nav-'+t).classList.remove('active');});document.getElementById('tab-'+name).classList.add('active');document.getElementById('nav-'+name).classList.add('active');if(!rendered[name]){rendered[name]=true;renders[name]();}}
+function showTab(name){['overview','workouts','prs','exercises','progress','heatmap','tools','health','insights','routines','academy'].forEach(function(t){document.getElementById('tab-'+t).classList.remove('active');document.getElementById('nav-'+t).classList.remove('active');});document.getElementById('tab-'+name).classList.add('active');document.getElementById('nav-'+name).classList.add('active');if(!rendered[name]){rendered[name]=true;renders[name]();}}
 
 function fetchAll(){
   document.getElementById('loading').style.display='block';document.getElementById('loading').innerHTML='<div class="loading-bar"></div>';
@@ -907,25 +907,6 @@ var STANDARDS = {
   'Barbell Row':    {beginner:90, novice:135, intermediate:185, advanced:240, elite:300}
 };
 
-// ===== EXERCISE LIBRARY =====
-var LIBRARY = [
-  {name:'Bench Press',muscle:'Chest',type:'Compound',tips:'Keep shoulder blades retracted. Bar touches lower chest. Drive feet into floor.',injury:'Avoid flaring elbows past 90 degrees. Warm up rotator cuff first.'},
-  {name:'Squat',muscle:'Quads',type:'Compound',tips:'Chest up, knees track over toes. Break parallel. Brace core hard.',injury:'Avoid caving knees. Keep heels flat. No lower back rounding.'},
-  {name:'Deadlift',muscle:'Back',type:'Compound',tips:'Bar over mid-foot. Hinge at hips, neutral spine. Drive floor away.',injury:'Never round lower back. Warm up thoroughly every session.'},
-  {name:'Overhead Press',muscle:'Shoulders',type:'Compound',tips:'Grip just outside shoulders. Press straight up, tuck chin.',injury:'Avoid hyperextending lower back. Warm up shoulders first.'},
-  {name:'Pull Up',muscle:'Back',type:'Compound',tips:'Dead hang start. Pull elbows to hips. Full range each rep.',injury:'Do not kip for strength training. Ease into volume to protect elbows.'},
-  {name:'Romanian Deadlift',muscle:'Hamstrings',type:'Compound',tips:'Push hips back as bar travels down legs. Feel the hamstring stretch.',injury:'Never let lower back round. Keep bar close to body throughout.'},
-  {name:'Dumbbell Curl',muscle:'Biceps',type:'Isolation',tips:'Supinate wrist at top. Avoid swinging torso. Full extension at bottom.',injury:'Avoid heavy cheat curls - easy on the distal bicep tendon.'},
-  {name:'Tricep Pushdown',muscle:'Triceps',type:'Isolation',tips:'Keep elbows pinned at sides. Full extension at bottom, squeeze triceps.',injury:'Avoid locking out with force repeatedly - easy on elbow joint.'},
-  {name:'Lateral Raise',muscle:'Shoulders',type:'Isolation',tips:'Raise to shoulder height. Pinky slightly higher than thumb.',injury:'Do not go too heavy - leads to compensating with traps and impingement.'},
-  {name:'Leg Press',muscle:'Quads',type:'Compound',tips:'Feet shoulder width. Do not lock knees at top. Full depth.',injury:'Never lock out knees explosively. Keep lower back pressed into pad.'},
-  {name:'Hip Thrust',muscle:'Glutes',type:'Compound',tips:'Upper back on bench. Drive hips up with glutes. Full extension at top.',injury:'Keep chin tucked. Avoid hyperextending spine at top.'},
-  {name:'Face Pull',muscle:'Rear Delts',type:'Isolation',tips:'Pull to forehead level. External rotate at end. Use rope attachment.',injury:'Great shoulder health exercise. Include it regularly in your program.'},
-  {name:'Plank',muscle:'Core',type:'Isolation',tips:'Straight line head to heels. Brace abs hard. Squeeze glutes.',injury:'Do not let hips sag - puts strain on lumbar spine.'},
-  {name:'Barbell Row',muscle:'Back',type:'Compound',tips:'Hinge to 45 degrees. Pull bar to lower chest. Squeeze shoulder blades.',injury:'Never use so much weight that lower back rounds.'},
-  {name:'Leg Curl',muscle:'Hamstrings',type:'Isolation',tips:'Squeeze at top. Control the negative.',injury:'Common source of hamstring strain if loaded too heavy too soon.'}
-];
-
 // ===== INSIGHTS =====
 function renderInsights() {
   var el = document.getElementById('tab-insights');
@@ -1184,116 +1165,753 @@ function resetGymStart(){
   renderInsights();
 }
 
-// ===== PLAN BUILDER =====
-var PLAN_DAYS = ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'];
+// ===== THE ACADEMY =====
+function renderAcademy() {
+  var el = document.getElementById('tab-academy');
 
-function renderPlanner(){
-  var el = document.getElementById('tab-planner');
-  var plan = lsGet('workout_plan') || {};
-  PLAN_DAYS.forEach(function(d){ if(!plan[d]) plan[d]=[]; });
+  // Academy CSS injected once
+  if (!document.getElementById('academy-style')) {
+    var s = document.createElement('style');
+    s.id = 'academy-style';
+    s.textContent = [
+      '.academy-hero{text-align:center;padding:40px 0 32px;border-bottom:1px solid var(--border);margin-bottom:32px;}',
+      '.academy-hero h2{font-size:36px;font-weight:800;letter-spacing:-1px;margin-bottom:8px;}',
+      '.academy-hero p{font-size:15px;color:var(--muted);max-width:500px;margin:0 auto;}',
+      '.academy-sections{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:16px;margin-bottom:32px;}',
+      '.academy-card{background:var(--surface);border:1px solid var(--border);border-radius:14px;overflow:hidden;cursor:pointer;transition:border-color 0.2s;}',
+      '.academy-card:hover{border-color:rgba(255,255,255,0.2);}',
+      '.academy-card-header{padding:20px;display:flex;align-items:center;gap:14px;}',
+      '.academy-icon{width:44px;height:44px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;}',
+      '.academy-card-title{font-size:16px;font-weight:800;margin-bottom:2px;}',
+      '.academy-card-sub{font-size:12px;color:var(--muted);}',
+      '.academy-card-body{padding:0 20px 20px;font-size:13px;color:var(--muted);line-height:1.6;}',
+      '.academy-article{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:28px;margin-bottom:16px;}',
+      '.academy-article h3{font-size:20px;font-weight:800;margin-bottom:6px;}',
+      '.academy-article-meta{font-size:11px;color:var(--muted);margin-bottom:16px;display:flex;gap:12px;}',
+      '.academy-article p{font-size:14px;color:var(--muted);line-height:1.8;margin-bottom:14px;}',
+      '.academy-article p:last-child{margin-bottom:0;}',
+      '.academy-article h4{font-size:14px;font-weight:700;color:var(--text);margin:18px 0 8px;}',
+      '.academy-tag{display:inline-block;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:700;margin-right:6px;}',
+      '.tag-beginner{background:rgba(74,222,128,0.15);color:#4ade80;}',
+      '.tag-intermediate{background:rgba(91,141,238,0.15);color:#5b8dee;}',
+      '.tag-advanced{background:rgba(232,98,74,0.15);color:#e8624a;}',
+      '.academy-nav{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:24px;}',
+      '.academy-nav-btn{padding:7px 16px;border-radius:8px;border:1px solid var(--border);background:transparent;color:var(--muted);font-family:Syne,sans-serif;font-size:12px;font-weight:500;cursor:pointer;}',
+      '.academy-nav-btn.active{background:var(--accent);color:#fff;border-color:transparent;}',
+      '.muscle-diagram-wrap{display:flex;gap:24px;flex-wrap:wrap;justify-content:center;margin:20px 0;}',
+      '.muscle-svg-container{position:relative;cursor:pointer;}',
+      '.muscle-svg-container svg .muscle-group{fill:#1c1c22;stroke:rgba(255,255,255,0.1);stroke-width:1;transition:fill 0.2s;}',
+      '.muscle-svg-container svg .muscle-group:hover{fill:#5b8dee;stroke:#5b8dee;}',
+      '.muscle-svg-container svg .muscle-group.highlighted{fill:#e8624a;stroke:#e8624a;}',
+      '.muscle-info-panel{background:var(--surface2);border-radius:10px;padding:16px;margin-top:12px;font-size:13px;line-height:1.7;min-height:80px;}',
+      '.muscle-info-panel strong{color:var(--accent);}',
+      '.key-fact{background:rgba(91,141,238,0.08);border-left:3px solid var(--accent);padding:12px 16px;border-radius:0 8px 8px 0;margin:12px 0;font-size:13px;color:var(--text);line-height:1.6;}',
+      '.supplement-table{width:100%;border-collapse:collapse;font-size:13px;margin-top:12px;}',
+      '.supplement-table th{text-align:left;padding:8px 12px;border-bottom:1px solid var(--border);font-size:11px;text-transform:uppercase;letter-spacing:0.06em;color:var(--muted);}',
+      '.supplement-table td{padding:10px 12px;border-bottom:1px solid var(--border);color:var(--muted);}',
+      '.supplement-table tr:last-child td{border-bottom:none;}',
+      '.evidence-badge{display:inline-block;padding:2px 8px;border-radius:4px;font-size:10px;font-weight:700;}',
+      '.ev-strong{background:rgba(74,222,128,0.2);color:#4ade80;}',
+      '.ev-moderate{background:rgba(245,158,11,0.2);color:#f59e0b;}',
+      '.ev-weak{background:rgba(232,98,74,0.2);color:#e8624a;}',
+      '.rep-range-row{display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--border);font-size:13px;}',
+      '.rep-range-row:last-child{border-bottom:none;}',
+      '.rep-range-bar{flex:1;height:8px;background:var(--surface2);border-radius:4px;overflow:hidden;}',
+      '.rep-range-fill{height:8px;border-radius:4px;}',
+    ].join('');
+    document.head.appendChild(s);
+  }
 
-  // Build exercise list from workouts
-  var exNames = [];
-  workouts.forEach(function(w){
-    (w.exercises||[]).forEach(function(e){
-      if(e.title && exNames.indexOf(e.title)===-1) exNames.push(e.title);
+  var activeSection = 'home';
+
+  function draw() {
+    if (activeSection === 'home') drawHome();
+    else if (activeSection === 'physiology') drawPhysiology();
+    else if (activeSection === 'training') drawTraining();
+    else if (activeSection === 'anatomy') drawAnatomy();
+    else if (activeSection === 'nutrition') drawNutrition();
+    else if (activeSection === 'recovery') drawRecovery();
+    else if (activeSection === 'injury') drawInjury();
+  }
+
+  function navHtml(active) {
+    var sections = [
+      {id:'home',label:'Home'},
+      {id:'physiology',label:'Muscle Physiology'},
+      {id:'training',label:'Training Science'},
+      {id:'anatomy',label:'Anatomy'},
+      {id:'nutrition',label:'Nutrition'},
+      {id:'recovery',label:'Recovery'},
+      {id:'injury',label:'Injury Prevention'}
+    ];
+    var html = '<div class="academy-nav">';
+    sections.forEach(function(s){
+      html += '<button class="academy-nav-btn'+(active===s.id?' active':'')+'" onclick="academyNav(\''+s.id+'\')">'+s.label+'</button>';
     });
-  });
-  exNames.sort();
-
-  var html = '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">';
-  html += '<div><div style="font-size:20px;font-weight:800;">Workout Plan Builder</div>';
-  html += '<div style="font-size:12px;color:var(--muted);">Build your weekly split. Saves automatically.</div></div>';
-  html += '<button class="log-btn" style="background:var(--accent2);" onclick="clearPlan()">Clear all</button></div>';
-  html += '<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;">';
-
-  PLAN_DAYS.forEach(function(day){
-    var dayExs = plan[day] || [];
-    html += '<div class="health-card">';
-    html += '<div class="health-card-title">'+day+'</div>';
-    html += '<div id="plan-day-'+day+'" style="min-height:60px;margin-bottom:10px;">';
-    if(dayExs.length) {
-      dayExs.forEach(function(ex, i){
-        html += '<div style="display:flex;justify-content:space-between;align-items:center;padding:5px 0;border-bottom:1px solid var(--border);font-size:12px;">';
-        html += '<span>'+ex+'</span>';
-        html += '<button style="background:none;border:none;color:var(--muted);cursor:pointer;font-size:14px;" onclick="removePlanEx(\''+day+'\','+i+')">&#x2715;</button></div>';
-      });
-    } else {
-      html += '<p style="font-size:11px;color:var(--muted);">Rest day</p>';
-    }
     html += '</div>';
-    html += '<div style="display:flex;gap:6px;">';
-    html += '<select id="plan-sel-'+day+'" style="flex:1;padding:6px;background:var(--surface2);border:1px solid var(--border);border-radius:6px;color:var(--text);font-family:DM Mono;font-size:11px;outline:none;">';
-    html += '<option value="">Add exercise...</option>';
-    exNames.forEach(function(n){ html += '<option value="'+n+'">'+n+'</option>'; });
-    html += '</select>';
-    html += '<button class="log-btn" style="padding:6px 10px;font-size:12px;" onclick="addPlanEx(\''+day+'\')">+</button>';
+    return html;
+  }
+
+  function drawHome() {
+    el.innerHTML = navHtml('home') +
+      '<div class="academy-hero">' +
+      '<h2>The Academy</h2>' +
+      '<p>Science-based learning for serious lifters. Physiology, training, nutrition, and anatomy — all in one place.</p>' +
+      '</div>' +
+      '<div class="academy-sections">' +
+      makeCard('physiology','&#x1F9EC;','#5b8dee','Muscle Physiology','Beginner','How your muscles actually grow — fiber types, hypertrophy mechanisms, and motor unit recruitment.') +
+      makeCard('training','&#x1F4CA;','#e8624a','Training Science','Intermediate','Progressive overload, volume landmarks, periodization, and why programs are built the way they are.') +
+      makeCard('anatomy','&#x1F9B4;','#4ade80','Anatomy Library','Beginner','Every major muscle group — origin, insertion, function, best exercises, and common injuries.') +
+      makeCard('nutrition','&#x1F95E;','#f59e0b','Nutrition Science','Intermediate','Protein synthesis, nutrient timing, and the supplements with actual evidence behind them.') +
+      makeCard('recovery','&#x1F634;','#a78bfa','Recovery Science','Advanced','Sleep, supercompensation, overreaching vs overtraining, and the science of rest days.') +
+      makeCard('injury','&#x1FA79;','#f472b6','Injury Prevention','Beginner','Common lifting injuries, how to avoid them, and return-to-training guidance.') +
+      '</div>';
+  }
+
+  function makeCard(section, icon, color, title, level, desc) {
+    var tagClass = level==='Beginner'?'tag-beginner':level==='Intermediate'?'tag-intermediate':'tag-advanced';
+    return '<div class="academy-card" onclick="academyNav(\''+section+'\')">'+
+      '<div class="academy-card-header">'+
+      '<div class="academy-icon" style="background:'+color+'22;">'+icon+'</div>'+
+      '<div><div class="academy-card-title">'+title+'</div>'+
+      '<span class="academy-tag '+tagClass+'">'+level+'</span>'+
+      '</div></div>'+
+      '<div class="academy-card-body">'+desc+'</div>'+
+      '</div>';
+  }
+
+  function drawPhysiology() {
+    el.innerHTML = navHtml('physiology') +
+      '<div class="academy-article">' +
+      '<div class="academy-article-meta"><span class="academy-tag tag-beginner">Beginner</span><span>Muscle Physiology</span></div>' +
+      '<h3>How Muscles Grow: The Science of Hypertrophy</h3>' +
+      '<p>Muscle growth — technically called skeletal muscle hypertrophy — occurs when muscle protein synthesis exceeds muscle protein breakdown over time. This happens in response to mechanical stress placed on the muscle during resistance training.</p>' +
+      '<div class="key-fact">The three primary mechanisms of hypertrophy are <strong>mechanical tension</strong>, <strong>metabolic stress</strong>, and <strong>muscle damage</strong>. Current research suggests mechanical tension is the dominant driver.</div>' +
+      '<h4>Mechanical Tension</h4>' +
+      '<p>When a muscle contracts against a load, especially through a full range of motion under tension, mechanoreceptors in the muscle fibers detect the strain. This triggers a signaling cascade that activates mTORC1 — the master regulator of muscle protein synthesis. This is why progressive overload (gradually increasing resistance) is the foundational principle of all effective training programs.</p>' +
+      '<h4>Metabolic Stress</h4>' +
+      '<p>The buildup of metabolic byproducts like lactate, hydrogen ions, and inorganic phosphate during high-rep, short-rest training creates cellular swelling and hormonal responses that contribute to growth. This is the "pump." While less important than mechanical tension, it plays a supporting role — particularly for isolation exercises done in higher rep ranges.</p>' +
+      '<h4>Muscle Damage</h4>' +
+      '<p>Eccentric contractions (the lowering phase of a lift) cause microscopic tears in muscle fibers. The repair process makes the fiber slightly thicker. However, excessive muscle damage causes prolonged soreness and can actually impair recovery without meaningfully increasing growth beyond what tension alone provides. Soreness is not a reliable indicator of an effective workout.</p>' +
+      '</div>' +
+      '<div class="academy-article">' +
+      '<div class="academy-article-meta"><span class="academy-tag tag-intermediate">Intermediate</span><span>Muscle Physiology</span></div>' +
+      '<h3>Muscle Fiber Types</h3>' +
+      '<p>Skeletal muscle is composed of two primary fiber types, each with distinct characteristics that make them suited to different kinds of work.</p>' +
+      '<h4>Type I — Slow Twitch</h4>' +
+      '<p>Type I fibers are highly oxidative, fatigue-resistant, and built for endurance. They have a high density of mitochondria and rely primarily on fat and oxygen for fuel. These fibers are recruited first during low-intensity exercise and are dominant in endurance athletes. They have moderate hypertrophic potential.</p>' +
+      '<h4>Type II — Fast Twitch</h4>' +
+      '<p>Type II fibers are larger, more powerful, and fatigue quickly. They rely on glycolysis for rapid energy production. These are the fibers most responsible for strength and size gains. Type IIx fibers are the fastest and most powerful; Type IIa fibers are intermediate. High-load, low-rep training preferentially recruits Type II fibers.</p>' +
+      '<div class="key-fact">Most people have roughly a 50/50 split of fiber types, but this varies significantly by individual and muscle. The calves and soleus tend to be Type I dominant; the chest and triceps tend to be Type II dominant.</div>' +
+      '<h4>Motor Unit Recruitment</h4>' +
+      '<p>A motor unit is a single motor neuron and all the muscle fibers it controls. The nervous system recruits motor units according to the "size principle" — smaller, Type I units are recruited first, with larger Type II units added as force demands increase. Training close to failure ensures maximum motor unit recruitment regardless of the weight used, which is why high-rep sets taken to near-failure can produce similar hypertrophy to heavy low-rep sets.</p>' +
+      '</div>';
+  }
+
+  function drawTraining() {
+    el.innerHTML = navHtml('training') +
+      '<div class="academy-article">' +
+      '<div class="academy-article-meta"><span class="academy-tag tag-beginner">Beginner</span><span>Training Science</span></div>' +
+      '<h3>Progressive Overload: The Foundational Principle</h3>' +
+      '<p>Progressive overload means systematically increasing the demands placed on your muscles over time. Without it, your body has no reason to adapt. With it, growth becomes almost inevitable given adequate nutrition and recovery.</p>' +
+      '<div class="key-fact">The most practical way to apply progressive overload: add weight when you can complete all reps with good form. Add reps when you cannot yet add weight. Add sets when reps and weight are both stalling.</div>' +
+      '<h4>Forms of Progressive Overload</h4>' +
+      '<p>Load progression (adding weight) is the most straightforward method. Volume progression (adding sets or reps) is equally valid and often more practical for intermediate and advanced lifters. Technique improvements, reduced rest periods, increased range of motion, and improved mind-muscle connection all represent forms of progressive overload — your nervous system becomes more efficient at recruiting the target muscle.</p>' +
+      '</div>' +
+      '<div class="academy-article">' +
+      '<div class="academy-article-meta"><span class="academy-tag tag-intermediate">Intermediate</span><span>Training Science</span></div>' +
+      '<h3>Volume Landmarks: MEV, MAV, and MRV</h3>' +
+      '<p>Renaissance Periodization popularized a framework for thinking about training volume using three landmarks per muscle group per week.</p>' +
+      '<h4>MEV — Minimum Effective Volume</h4>' +
+      '<p>The minimum number of sets per week needed to stimulate growth. For most muscles this is around 4-6 hard sets per week. Training below MEV maintains muscle but does not grow it.</p>' +
+      '<h4>MAV — Maximum Adaptive Volume</h4>' +
+      '<p>The sweet spot where you get maximum growth per unit of recovery cost. This is where you want to train most of the time — typically 10-20 sets per muscle per week depending on the individual and the muscle group.</p>' +
+      '<h4>MRV — Maximum Recoverable Volume</h4>' +
+      '<p>The upper limit of volume you can recover from. Exceeding MRV leads to overreaching, declining performance, and elevated injury risk. MRV varies significantly by individual, training history, sleep, and nutrition.</p>' +
+      '<div class="key-fact">These numbers are highly individual. Start at MEV, add volume gradually over a training block, and watch for signs of excessive fatigue. When performance drops consistently, you have exceeded your MRV.</div>' +
+      '</div>' +
+      '<div class="academy-article">' +
+      '<div class="academy-article-meta"><span class="academy-tag tag-intermediate">Intermediate</span><span>Training Science</span></div>' +
+      '<h3>Rep Ranges and What They Actually Do</h3>' +
+      '<p>Research shows that hypertrophy can be achieved across a wide range of rep counts — roughly 5 to 30+ reps — provided sets are taken close to muscular failure. The old idea that 8-12 reps is a "hypertrophy range" and 1-5 is "strength only" is an oversimplification.</p>' +
+      '<div style="margin:16px 0;">' +
+      repRow('1-5 reps','Strength / Neural','#e8624a',95) +
+      repRow('6-12 reps','Hypertrophy / Strength','#5b8dee',85) +
+      repRow('13-20 reps','Hypertrophy / Endurance','#4ade80',70) +
+      repRow('20-30+ reps','Endurance / Metabolic','#f59e0b',50) +
+      '</div>' +
+      '<p>Heavy sets (1-5 reps) build more strength through neural adaptations. Higher rep sets (15-30) generate more metabolic stress. The middle range (6-15) is practical for most exercises. Incorporating multiple rep ranges across a program is generally the optimal approach.</p>' +
+      '</div>' +
+      '<div class="academy-article">' +
+      '<div class="academy-article-meta"><span class="academy-tag tag-advanced">Advanced</span><span>Training Science</span></div>' +
+      '<h3>Periodization</h3>' +
+      '<p>Periodization is the systematic planning of training variables over time to optimize performance and recovery. The three main models are linear, undulating, and block periodization.</p>' +
+      '<h4>Linear Periodization</h4>' +
+      '<p>Start with higher volume and lower intensity, progressively shift toward lower volume and higher intensity over weeks or months. Classic beginner and powerlifting approach. Simple and effective for less experienced lifters.</p>' +
+      '<h4>Daily Undulating Periodization (DUP)</h4>' +
+      '<p>Vary rep ranges within the same week — for example, heavy (3-5 reps) on Monday, moderate (8-12) on Wednesday, higher (15-20) on Friday. Provides more frequent stimulus variation. Popular among intermediate and advanced lifters.</p>' +
+      '<h4>Block Periodization</h4>' +
+      '<p>Organize training into focused blocks — accumulation (high volume), intensification (higher intensity), and realization (peaking). Used heavily in competitive powerlifting and Olympic lifting. Each block builds on the last.</p>' +
+      '</div>';
+  }
+
+  function repRow(label, desc, color, pct) {
+    return '<div class="rep-range-row">' +
+      '<div style="width:90px;font-weight:700;font-size:12px;">'+label+'</div>' +
+      '<div class="rep-range-bar"><div class="rep-range-fill" style="width:'+pct+'%;background:'+color+';"></div></div>' +
+      '<div style="width:160px;font-size:11px;color:var(--muted);">'+desc+'</div>' +
+      '</div>';
+  }
+
+  function drawAnatomy() {
+    var muscles = [
+      {name:'Chest (Pectoralis Major)',short:'chest',color:'#5b8dee',origin:'Clavicle, sternum, ribs 1-6',insertion:'Intertubercular groove of humerus',function:'Horizontal adduction, internal rotation, shoulder flexion',exercises:'Bench press, dumbbell fly, cable fly, push-up, dip',injury:'Pec tears most common during max effort bench. Warm up thoroughly. Avoid extreme stretching under load.'},
+      {name:'Back (Latissimus Dorsi)',short:'lats',color:'#e8624a',origin:'Spinous processes T7-L5, iliac crest, lower ribs',insertion:'Intertubercular groove of humerus',function:'Shoulder extension, adduction, internal rotation',exercises:'Pull-up, lat pulldown, barbell row, dumbbell row, cable row',injury:'Lower back strain common when rows are performed with excessive lumbar flexion. Brace core.'},
+      {name:'Shoulders (Deltoids)',short:'delts',color:'#4ade80',origin:'Clavicle (anterior), acromion (medial), spine of scapula (posterior)',insertion:'Deltoid tuberosity of humerus',function:'Shoulder abduction (all), flexion (anterior), extension (posterior)',exercises:'Overhead press, lateral raise, front raise, rear delt fly, face pull',injury:'Shoulder impingement from anterior delt overtraining. Prioritize rear delt and rotator cuff work.'},
+      {name:'Quadriceps',short:'quads',color:'#f59e0b',origin:'Anterior inferior iliac spine, femur',insertion:'Tibial tuberosity via patellar tendon',function:'Knee extension, hip flexion (rectus femoris)',exercises:'Squat, leg press, hack squat, leg extension, lunge',injury:'Patellar tendinopathy from high jump/squat volume. Knee cave during squats strains MCL.'},
+      {name:'Hamstrings',short:'hams',color:'#a78bfa',origin:'Ischial tuberosity, posterior femur',insertion:'Tibia and fibula',function:'Knee flexion, hip extension',exercises:'Romanian deadlift, leg curl, good morning, glute-ham raise',injury:'Most commonly strained during explosive hip extension. Most tears occur at the proximal attachment near the glute.'},
+      {name:'Glutes (Gluteus Maximus)',short:'glutes',color:'#f472b6',origin:'Posterior ilium, sacrum, coccyx',insertion:'Gluteal tuberosity of femur, iliotibial band',function:'Hip extension, external rotation, abduction',exercises:'Hip thrust, squat, deadlift, Bulgarian split squat, glute bridge',injury:'Often underactivated. Gluteal amnesia from prolonged sitting reduces activation — consciously cue glutes.'},
+      {name:'Biceps Brachii',short:'biceps',color:'#38bdf8',origin:'Supraglenoid tubercle, coracoid process of scapula',insertion:'Radial tuberosity',function:'Elbow flexion, supination of forearm',exercises:'Barbell curl, dumbbell curl, hammer curl, chin-up, cable curl',injury:'Distal bicep tendon tears from heavy supinated curls or chin-ups. Proximal tears from excessive stretch under load.'},
+      {name:'Triceps Brachii',short:'triceps',color:'#fb923c',origin:'Infraglenoid tubercle, posterior humerus (2 heads)',insertion:'Olecranon process of ulna',function:'Elbow extension, shoulder extension (long head)',exercises:'Tricep pushdown, skull crusher, close-grip bench, overhead extension, dip',injury:'Tricep tendinopathy at the elbow from high-frequency heavy pressing. Elbow flare worsens this.'},
+      {name:'Trapezius',short:'traps',color:'#34d399',origin:'Occipital bone, ligamentum nuchae, spinous processes C7-T12',insertion:'Clavicle, acromion, spine of scapula',function:'Scapular elevation (upper), retraction (middle), depression (lower)',exercises:'Shrug, face pull, upright row, overhead press, deadlift',injury:'Upper trap overactivation causes neck tension. Prioritize middle and lower trap work to restore balance.'},
+      {name:'Core (Rectus Abdominis + Obliques)',short:'core',color:'#e879f9',origin:'Pubic symphysis (RA), iliac crest (obliques)',insertion:'Xiphoid process, ribs 5-7',function:'Spinal flexion, lateral flexion, rotation, anti-extension',exercises:'Plank, crunch, ab rollout, leg raise, cable crunch, pallof press',injury:'Core weakness is a primary contributor to lower back injury. Train anti-extension (plank) over pure flexion (crunch).'}
+    ];
+
+    var html = navHtml('anatomy');
+    html += '<div class="academy-article"><h3 style="margin-bottom:4px;">Anatomy Library</h3><p style="font-size:13px;color:var(--muted);margin-bottom:20px;">Click any muscle group to see detailed anatomy, function, and training notes.</p>';
+
+    // Muscle selector
+    html += '<div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px;">';
+    muscles.forEach(function(m,i){
+      html += '<button onclick="showMuscle('+i+')" id="mbtn-'+i+'" style="padding:6px 14px;border-radius:20px;border:1px solid var(--border);background:transparent;color:var(--muted);font-family:Syne,sans-serif;font-size:12px;cursor:pointer;">'+m.short+'</button>';
+    });
+    html += '</div>';
+    html += '<div id="muscle-detail" class="muscle-info-panel">Select a muscle group above to see detailed anatomy.</div>';
+    html += '</div>';
+
+    // Muscle diagram (custom SVG front/back)
+    html += '<div class="academy-article"><h3 style="margin-bottom:16px;">Muscle Map</h3>';
+    html += '<div class="muscle-diagram-wrap">';
+    html += buildFrontSVG();
+    html += buildBackSVG();
+    html += '</div>';
+    html += '<div id="svg-muscle-info" class="muscle-info-panel" style="margin-top:0;">Hover or click a muscle on the diagram above.</div>';
+    html += '</div>';
+
+    el.innerHTML = html;
+
+    // Muscle detail function
+    window.showMuscle = function(idx) {
+      var m = muscles[idx];
+      muscles.forEach(function(_, i){ var b=document.getElementById('mbtn-'+i); if(b){b.style.background='transparent';b.style.color='var(--muted)';b.style.borderColor='var(--border)';} });
+      var btn = document.getElementById('mbtn-'+idx);
+      if(btn){ btn.style.background=m.color+'33'; btn.style.color=m.color; btn.style.borderColor=m.color; }
+      var d = document.getElementById('muscle-detail');
+      if(d) d.innerHTML = '<strong style="color:'+m.color+';font-size:15px;">'+m.name+'</strong><br>' +
+        '<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:10px 0;font-size:12px;">' +
+        '<div><b style="color:var(--text);">Origin:</b><br>'+m.origin+'</div>' +
+        '<div><b style="color:var(--text);">Insertion:</b><br>'+m.insertion+'</div>' +
+        '</div>' +
+        '<div style="margin-bottom:8px;font-size:12px;"><b style="color:var(--text);">Function:</b> '+m.function+'</div>' +
+        '<div style="margin-bottom:8px;font-size:12px;"><b style="color:var(--text);">Best exercises:</b> '+m.exercises+'</div>' +
+        '<div style="font-size:12px;background:rgba(232,98,74,0.08);border-left:3px solid #e8624a;padding:8px 10px;border-radius:0 6px 6px 0;"><b style="color:#e8624a;">Injury note:</b> '+m.injury+'</div>';
+    };
+  }
+
+  function buildFrontSVG() {
+    return '<div><div style="font-size:11px;color:var(--muted);text-align:center;margin-bottom:8px;text-transform:uppercase;letter-spacing:0.06em;">Front</div>' +
+    '<svg width="160" height="320" viewBox="0 0 160 320" xmlns="http://www.w3.org/2000/svg">' +
+    // Body outline
+    '<ellipse cx="80" cy="30" rx="22" ry="26" fill="#1c1c22" stroke="rgba(255,255,255,0.15)" stroke-width="1"/>' + // head
+    '<rect x="58" y="55" width="44" height="8" rx="4" fill="#1c1c22" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>' + // neck
+    // Chest
+    '<path class="muscle-group" d="M42 65 Q50 62 65 68 Q72 72 72 88 Q65 92 55 90 Q42 85 40 78 Z" onclick="svgMuscleClick(\'Chest\')" title="Chest"/>' +
+    '<path class="muscle-group" d="M118 65 Q110 62 95 68 Q88 72 88 88 Q95 92 105 90 Q118 85 120 78 Z" onclick="svgMuscleClick(\'Chest\')" title="Chest"/>' +
+    // Front delts
+    '<ellipse class="muscle-group" cx="38" cy="72" rx="10" ry="12" onclick="svgMuscleClick(\'Front Delts\')" title="Front Delts"/>' +
+    '<ellipse class="muscle-group" cx="122" cy="72" rx="10" ry="12" onclick="svgMuscleClick(\'Front Delts\')" title="Front Delts"/>' +
+    // Abs
+    '<rect class="muscle-group" x="66" y="90" width="12" height="10" rx="2" onclick="svgMuscleClick(\'Core\')"/>' +
+    '<rect class="muscle-group" x="82" y="90" width="12" height="10" rx="2" onclick="svgMuscleClick(\'Core\')"/>' +
+    '<rect class="muscle-group" x="66" y="103" width="12" height="10" rx="2" onclick="svgMuscleClick(\'Core\')"/>' +
+    '<rect class="muscle-group" x="82" y="103" width="12" height="10" rx="2" onclick="svgMuscleClick(\'Core\')"/>' +
+    '<rect class="muscle-group" x="66" y="116" width="12" height="10" rx="2" onclick="svgMuscleClick(\'Core\')"/>' +
+    '<rect class="muscle-group" x="82" y="116" width="12" height="10" rx="2" onclick="svgMuscleClick(\'Core\')"/>' +
+    // Obliques
+    '<path class="muscle-group" d="M62 92 Q55 100 54 118 Q60 122 65 118 Q67 105 66 92 Z" onclick="svgMuscleClick(\'Core\')"/>' +
+    '<path class="muscle-group" d="M98 92 Q105 100 106 118 Q100 122 95 118 Q93 105 94 92 Z" onclick="svgMuscleClick(\'Core\')"/>' +
+    // Biceps
+    '<path class="muscle-group" d="M26 85 Q20 90 19 108 Q22 114 28 112 Q33 110 34 92 Q32 84 26 85 Z" onclick="svgMuscleClick(\'Biceps\')"/>' +
+    '<path class="muscle-group" d="M134 85 Q140 90 141 108 Q138 114 132 112 Q127 110 126 92 Q128 84 134 85 Z" onclick="svgMuscleClick(\'Biceps\')"/>' +
+    // Forearms
+    '<path class="muscle-group" d="M20 114 Q16 120 17 136 Q20 140 25 138 Q29 136 28 118 Z" onclick="svgMuscleClick(\'Core\')"/>' +
+    '<path class="muscle-group" d="M140 114 Q144 120 143 136 Q140 140 135 138 Q131 136 132 118 Z" onclick="svgMuscleClick(\'Core\')"/>' +
+    // Hip area
+    '<path d="M54 128 Q48 132 46 148 Q56 155 80 156 Q104 155 114 148 Q112 132 106 128 Z" fill="#1c1c22" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>' +
+    // Quads
+    '<path class="muscle-group" d="M56 156 Q46 162 44 190 Q50 200 62 198 Q70 196 72 170 Q70 158 56 156 Z" onclick="svgMuscleClick(\'Quads\')"/>' +
+    '<path class="muscle-group" d="M104 156 Q114 162 116 190 Q110 200 98 198 Q90 196 88 170 Q90 158 104 156 Z" onclick="svgMuscleClick(\'Quads\')"/>' +
+    // Inner quad
+    '<path class="muscle-group" d="M72 160 Q78 158 88 160 Q88 185 84 198 Q80 200 76 198 Q72 185 72 160 Z" onclick="svgMuscleClick(\'Quads\')"/>' +
+    // Calves
+    '<path class="muscle-group" d="M52 210 Q46 218 48 240 Q52 248 58 246 Q64 244 64 218 Q60 210 52 210 Z" onclick="svgMuscleClick(\'Calves\')"/>' +
+    '<path class="muscle-group" d="M108 210 Q114 218 112 240 Q108 248 102 246 Q96 244 96 218 Q100 210 108 210 Z" onclick="svgMuscleClick(\'Calves\')"/>' +
+    // Shins
+    '<path d="M58 246 Q56 260 57 278 Q60 282 64 280 Q68 278 66 246 Z" fill="#1c1c22" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>' +
+    '<path d="M102 246 Q104 260 103 278 Q100 282 96 280 Q92 278 94 246 Z" fill="#1c1c22" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>' +
+    '</svg></div>';
+  }
+
+  function buildBackSVG() {
+    return '<div><div style="font-size:11px;color:var(--muted);text-align:center;margin-bottom:8px;text-transform:uppercase;letter-spacing:0.06em;">Back</div>' +
+    '<svg width="160" height="320" viewBox="0 0 160 320" xmlns="http://www.w3.org/2000/svg">' +
+    '<ellipse cx="80" cy="30" rx="22" ry="26" fill="#1c1c22" stroke="rgba(255,255,255,0.15)" stroke-width="1"/>' +
+    '<rect x="58" y="55" width="44" height="8" rx="4" fill="#1c1c22" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>' +
+    // Traps
+    '<path class="muscle-group" d="M58 63 Q68 58 80 60 Q92 58 102 63 Q96 76 80 78 Q64 76 58 63 Z" onclick="svgMuscleClick(\'Traps\')"/>' +
+    // Rear delts
+    '<ellipse class="muscle-group" cx="38" cy="72" rx="10" ry="12" onclick="svgMuscleClick(\'Rear Delts\')"/>' +
+    '<ellipse class="muscle-group" cx="122" cy="72" rx="10" ry="12" onclick="svgMuscleClick(\'Rear Delts\')"/>' +
+    // Lats
+    '<path class="muscle-group" d="M42 78 Q36 88 38 112 Q46 120 58 116 Q66 112 65 90 Q60 75 42 78 Z" onclick="svgMuscleClick(\'Back\')"/>' +
+    '<path class="muscle-group" d="M118 78 Q124 88 122 112 Q114 120 102 116 Q94 112 95 90 Q100 75 118 78 Z" onclick="svgMuscleClick(\'Back\')"/>' +
+    // Mid/lower back
+    '<path class="muscle-group" d="M65 90 Q72 86 80 87 Q88 86 95 90 Q94 116 88 128 Q84 132 80 132 Q76 132 72 128 Q66 116 65 90 Z" onclick="svgMuscleClick(\'Back\')"/>' +
+    // Triceps
+    '<path class="muscle-group" d="M26 83 Q20 90 19 110 Q22 116 28 114 Q33 112 34 90 Q32 82 26 83 Z" onclick="svgMuscleClick(\'Triceps\')"/>' +
+    '<path class="muscle-group" d="M134 83 Q140 90 141 110 Q138 116 132 114 Q127 112 126 90 Q128 82 134 83 Z" onclick="svgMuscleClick(\'Triceps\')"/>' +
+    // Glutes
+    '<path class="muscle-group" d="M54 132 Q46 138 46 158 Q56 164 80 165 Q104 164 114 158 Q114 138 106 132 Z" onclick="svgMuscleClick(\'Glutes\')"/>' +
+    // Hamstrings
+    '<path class="muscle-group" d="M56 165 Q46 170 44 196 Q50 206 62 204 Q70 202 72 175 Q70 164 56 165 Z" onclick="svgMuscleClick(\'Hamstrings\')"/>' +
+    '<path class="muscle-group" d="M104 165 Q114 170 116 196 Q110 206 98 204 Q90 202 88 175 Q90 164 104 165 Z" onclick="svgMuscleClick(\'Hamstrings\')"/>' +
+    // Calves back
+    '<path class="muscle-group" d="M52 210 Q46 218 48 240 Q52 248 58 246 Q64 244 64 218 Q60 210 52 210 Z" onclick="svgMuscleClick(\'Calves\')"/>' +
+    '<path class="muscle-group" d="M108 210 Q114 218 112 240 Q108 248 102 246 Q96 244 96 218 Q100 210 108 210 Z" onclick="svgMuscleClick(\'Calves\')"/>' +
+    '</svg></div>';
+  }
+
+  window.svgMuscleClick = function(muscle) {
+    var info = {
+      'Chest':'Pectoralis Major — horizontal adduction and shoulder flexion. Best exercises: bench press, fly, push-up.',
+      'Front Delts':'Anterior Deltoid — shoulder flexion and internal rotation. Overtrained in most programs due to heavy pressing.',
+      'Rear Delts':'Posterior Deltoid — shoulder extension and external rotation. Most undertrained muscle in lifters. Prioritize face pulls.',
+      'Back':'Latissimus Dorsi / Rhomboids / Erector Spinae — shoulder extension, adduction, spinal stability. Pull-ups and rows.',
+      'Traps':'Trapezius — scapular elevation, retraction, depression. Three distinct regions. Face pulls hit lower and mid traps.',
+      'Biceps':'Biceps Brachii — elbow flexion and forearm supination. Best trained with full extension at the bottom of each rep.',
+      'Triceps':'Triceps Brachii — elbow extension. The largest muscle of the upper arm. Overhead extensions hit the long head best.',
+      'Core':'Rectus Abdominis + Obliques — spinal flexion, rotation, anti-extension. Train anti-extension (plank) for injury prevention.',
+      'Quads':'Quadriceps (4 muscles) — knee extension and hip flexion. Dominant in squats and leg press.',
+      'Hamstrings':'Hamstring complex — knee flexion and hip extension. Most commonly strained muscle in athletes.',
+      'Glutes':'Gluteus Maximus — hip extension and external rotation. Most powerful muscle in the body. Hip thrusts are best.',
+      'Calves':'Gastrocnemius + Soleus — plantarflexion. Gastrocnemius crosses the knee; train with straight legs. Soleus with bent knees.'
+    };
+    var d = document.getElementById('svg-muscle-info');
+    if(d) d.innerHTML = '<strong style="color:var(--accent);">'+muscle+'</strong><br><span style="font-size:12px;line-height:1.7;">'+(info[muscle]||muscle)+'</span>';
+  };
+
+  function drawNutrition() {
+    el.innerHTML = navHtml('nutrition') +
+      '<div class="academy-article">' +
+      '<div class="academy-article-meta"><span class="academy-tag tag-beginner">Beginner</span><span>Nutrition Science</span></div>' +
+      '<h3>Protein: How Much, When, and Why</h3>' +
+      '<p>Protein is the most important macronutrient for muscle building. When you eat protein, it is broken down into amino acids, which are used to repair and build muscle tissue through muscle protein synthesis (MPS).</p>' +
+      '<div class="key-fact">Current evidence supports <strong>0.7–1g of protein per pound of bodyweight per day</strong> for optimal muscle building. Higher intakes (up to 1.2g/lb) may benefit advanced lifters in a caloric deficit.</div>' +
+      '<h4>The Leucine Threshold</h4>' +
+      '<p>Leucine is the key amino acid that triggers MPS. Each meal needs roughly 2-3g of leucine to maximally stimulate MPS — this is the "leucine threshold." This equates to approximately 30-40g of protein per meal from high-quality sources like meat, eggs, dairy, or whey. Eating below this threshold results in a suboptimal anabolic response regardless of daily totals.</p>' +
+      '<h4>Meal Frequency and Timing</h4>' +
+      '<p>Spreading protein across 3-5 meals per day optimizes MPS stimulation across the day. The "anabolic window" (eating within 30 minutes post-workout) is largely overstated for most lifters — what matters more is total daily protein intake. However, consuming protein within 1-2 hours post-workout is still sensible practice.</p>' +
+      '</div>' +
+      '<div class="academy-article">' +
+      '<div class="academy-article-meta"><span class="academy-tag tag-intermediate">Intermediate</span><span>Nutrition Science</span></div>' +
+      '<h3>Supplement Evidence Ratings</h3>' +
+      '<p>Most supplements have weak or no scientific evidence behind them. Here are the ones that actually have robust research support for strength and muscle building.</p>' +
+      '<table class="supplement-table">' +
+      '<tr><th>Supplement</th><th>Evidence</th><th>Dose</th><th>Effect</th></tr>' +
+      suppRow('Creatine Monohydrate','strong','3-5g/day','Increases phosphocreatine stores, improves power output and recovery. Most researched supplement in history.') +
+      suppRow('Caffeine','strong','3-6mg/kg body weight','Increases strength, endurance, and focus. Take 30-60 min pre-workout. Build tolerance management.') +
+      suppRow('Protein powder','strong','As needed to hit daily target','Convenient protein source. No advantage over whole food sources — just convenience.') +
+      suppRow('Beta-Alanine','moderate','3.2-6.4g/day','Buffers lactic acid. Benefits mainly endurance and high-rep training. Causes harmless tingling.') +
+      suppRow('Citrulline Malate','moderate','6-8g pre-workout','Improves blood flow, reduces fatigue, mild performance enhancement.') +
+      suppRow('Vitamin D','moderate','1000-4000 IU/day','Supports testosterone, bone health, and immune function. Most people are deficient.') +
+      suppRow('Omega-3 Fish Oil','moderate','2-4g/day','Reduces inflammation, may enhance muscle protein synthesis. Joint health benefits.') +
+      suppRow('BCAAs','weak','N/A','Redundant if protein intake is adequate. Save your money on whole protein sources.') +
+      suppRow('Testosterone boosters','weak','N/A','No meaningful effect on testosterone in healthy individuals. Marketing over science.') +
+      '</table></div>' +
+      '<div class="academy-article">' +
+      '<div class="academy-article-meta"><span class="academy-tag tag-intermediate">Intermediate</span><span>Nutrition Science</span></div>' +
+      '<h3>Bulking and Cutting: The Science</h3>' +
+      '<p>Body composition change requires manipulating energy balance — calories in versus calories out. The rate of change matters significantly for preserving muscle.</p>' +
+      '<h4>Bulking (Caloric Surplus)</h4>' +
+      '<p>A surplus of 200-500 calories above TDEE is optimal for maximizing muscle gain while minimizing fat gain. Larger surpluses do not build muscle faster — they primarily add fat. "Dirty bulking" is largely ineffective and requires a longer, harder cut afterward.</p>' +
+      '<h4>Cutting (Caloric Deficit)</h4>' +
+      '<p>A deficit of 300-500 calories is optimal for fat loss while preserving muscle. Larger deficits accelerate muscle loss, reduce performance, and increase catabolism. High protein intake (1g/lb+) and continued resistance training are the two most important muscle-preservation strategies during a cut.</p>' +
+      '<div class="key-fact">Body recomposition — gaining muscle and losing fat simultaneously — is achievable for beginners, those returning from a layoff, and people with higher body fat levels. For advanced natural lifters, dedicated bulk and cut phases are generally more effective.</div>' +
+      '</div>';
+  }
+
+  function suppRow(name, ev, dose, effect) {
+    var evClass = ev==='strong'?'ev-strong':ev==='moderate'?'ev-moderate':'ev-weak';
+    var evLabel = ev==='strong'?'Strong':ev==='moderate'?'Moderate':'Weak';
+    return '<tr><td style="color:var(--text);font-weight:700;">'+name+'</td><td><span class="evidence-badge '+evClass+'">'+evLabel+'</span></td><td>'+dose+'</td><td>'+effect+'</td></tr>';
+  }
+
+  function drawRecovery() {
+    el.innerHTML = navHtml('recovery') +
+      '<div class="academy-article">' +
+      '<div class="academy-article-meta"><span class="academy-tag tag-intermediate">Intermediate</span><span>Recovery Science</span></div>' +
+      '<h3>Sleep and Muscle Repair</h3>' +
+      '<p>Sleep is the most powerful recovery tool available. The majority of muscle protein synthesis, growth hormone secretion, and tissue repair occurs during deep sleep (slow-wave sleep, or Stage 3 NREM).</p>' +
+      '<div class="key-fact">Growth hormone secretion peaks during the first few hours of sleep. Chronic sleep deprivation (under 6 hours) significantly increases cortisol, reduces testosterone, impairs MPS, and elevates injury risk.</div>' +
+      '<h4>Sleep Architecture</h4>' +
+      '<p>A full sleep cycle lasts roughly 90 minutes and includes light sleep, deep sleep, and REM. Deep sleep dominates early in the night and is most important for physical recovery. REM sleep dominates later and is critical for motor learning and skill consolidation — relevant for technique-driven lifts.</p>' +
+      '<h4>Practical Recommendations</h4>' +
+      '<p>Target 7-9 hours per night. Consistent sleep and wake times improve sleep quality more than total hours alone. Avoid screens, alcohol, and heavy meals within 90 minutes of bed. Keep the room cool (65-68°F) and dark. Even a single night of poor sleep reduces strength output by 5-10%.</p>' +
+      '</div>' +
+      '<div class="academy-article">' +
+      '<div class="academy-article-meta"><span class="academy-tag tag-advanced">Advanced</span><span>Recovery Science</span></div>' +
+      '<h3>Supercompensation and Deloads</h3>' +
+      '<p>The supercompensation model describes how the body responds to training stress. After a training stimulus, performance temporarily decreases (fatigue). Given adequate recovery, the body rebuilds beyond its previous baseline (supercompensation). This is the mechanism underlying progressive adaptation.</p>' +
+      '<h4>Overreaching vs Overtraining</h4>' +
+      '<p>Functional overreaching is intentional short-term excessive training followed by a deload — performance drops briefly then rebounds to a new high. Non-functional overreaching occurs when training load exceeds recovery capacity for too long — recovery takes weeks. Overtraining syndrome is rare but serious — recovery takes months and involves hormonal dysregulation.</p>' +
+      '<div class="key-fact">Most lifters who think they are "overtrained" are actually just under-recovered. Before reducing training, improve sleep, nutrition, and stress management.</div>' +
+      '<h4>Deload Protocols</h4>' +
+      '<p>A deload is a planned reduction in training stress to facilitate recovery and supercompensation. Reduce volume (sets) by 40-50% while maintaining intensity (weight). Frequency can stay the same. Duration is typically one week. Deloads should be programmed every 4-8 weeks for intermediate/advanced lifters, or reactively when performance declines for 2+ consecutive sessions.</p>' +
+      '</div>' +
+      '<div class="academy-article">' +
+      '<div class="academy-article-meta"><span class="academy-tag tag-advanced">Advanced</span><span>Recovery Science</span></div>' +
+      '<h3>Active Recovery and Modalities</h3>' +
+      '<p>Active recovery — low-intensity movement on rest days — improves blood flow to muscles, reduces DOMS, and maintains training frequency without adding significant fatigue.</p>' +
+      '<h4>What Actually Works</h4>' +
+      '<p>Light cardio (walking, cycling, swimming) at under 60% max heart rate for 20-30 minutes is the most evidence-supported active recovery method. Foam rolling reduces perception of soreness but has limited impact on actual recovery. Cold water immersion (ice baths) blunts acute inflammation but may also blunt the anabolic response to training if used chronically — best reserved for competition periods. Massage reduces soreness perception. Stretching has minimal impact on recovery but improves long-term mobility.</p>' +
+      '</div>';
+  }
+
+  function drawInjury() {
+    el.innerHTML = navHtml('injury') +
+      '<div class="academy-article">' +
+      '<div class="academy-article-meta"><span class="academy-tag tag-beginner">Beginner</span><span>Injury Prevention</span></div>' +
+      '<h3>Why Lifters Get Injured</h3>' +
+      '<p>The vast majority of lifting injuries are not acute traumatic events — they are overuse injuries that develop gradually from doing too much, too soon, with too little recovery. Understanding the mechanisms helps you avoid them entirely.</p>' +
+      '<div class="key-fact">Tendons and ligaments adapt to training stress at a much slower rate than muscles — roughly 6-8 weeks behind. This means your muscles can handle loads your connective tissue cannot yet tolerate. Progressive loading is as much about protecting tendons as it is about building muscle.</div>' +
+      '<h4>The Most Common Lifting Injuries</h4>' +
+      '</div>' +
+      '<div class="academy-article">' +
+      '<div class="academy-article-meta"><span class="academy-tag tag-beginner">Beginner</span><span>Injury Prevention</span></div>' +
+      '<h3>Shoulder Impingement</h3>' +
+      '<p>The most common shoulder issue in lifters. Occurs when the rotator cuff tendons are compressed under the acromion during overhead movements. Almost always caused by muscle imbalance — overactive anterior deltoid and upper traps, underactive lower traps, serratus anterior, and rear delts.</p>' +
+      '<h4>Prevention</h4>' +
+      '<p>Include face pulls, band pull-aparts, and external rotation work every single training week. For every pushing exercise, include at least one pulling exercise. Avoid pressing with extreme internal rotation (elbows flaring too wide on bench press). Address thoracic mobility — a rounded upper back dramatically increases impingement risk.</p>' +
+      '<h4>Return to Training</h4>' +
+      '<p>Reduce overhead pressing volume. Continue pulling work. Strengthen rear delts and rotator cuff. Address thoracic spine mobility daily. Most cases resolve within 4-8 weeks with conservative management.</p>' +
+      '</div>' +
+      '<div class="academy-article">' +
+      '<div class="academy-article-meta"><span class="academy-tag tag-beginner">Beginner</span><span>Injury Prevention</span></div>' +
+      '<h3>Lower Back Pain</h3>' +
+      '<p>Lower back pain is the single most common complaint among lifters. The two primary culprits are lumbar flexion under load (rounding during deadlifts/rows) and excessive lumbar extension (hyperextension during overhead press or hip thrust).</p>' +
+      '<h4>Prevention</h4>' +
+      '<p>Master the hip hinge before loading it. Brace your core by taking a deep breath and creating intra-abdominal pressure (Valsalva maneuver) before each heavy rep. Build anterior core strength — plank variations, ab rollouts, and pallof presses are more protective than crunches. Strengthen the glutes — weak glutes force the lower back to compensate.</p>' +
+      '<h4>Return to Training</h4>' +
+      '<p>Avoid pain-provoking movements. Continue upper body training. Begin McGill Big 3: curl-up, side plank, bird-dog. Gradually reintroduce hip hinge patterns starting with bodyweight. Most acute lower back strains resolve in 2-4 weeks.</p>' +
+      '</div>' +
+      '<div class="academy-article">' +
+      '<div class="academy-article-meta"><span class="academy-tag tag-beginner">Beginner</span><span>Injury Prevention</span></div>' +
+      '<h3>Patellar Tendinopathy (Knee)</h3>' +
+      '<p>Overuse injury of the patellar tendon, typically from rapid increases in squat or jump volume. The tendon becomes sensitized and painful during loading, especially with knee extension under load.</p>' +
+      '<h4>Prevention</h4>' +
+      '<p>Increase squat and leg press volume gradually — no more than 10% per week. Avoid sitting in full knee flexion for extended periods. Strengthen the VMO (inner quad) with terminal knee extensions and slow, controlled split squats. Eccentric training (slow lowering phase) is the most evidence-based treatment.</p>' +
+      '</div>' +
+      '<div class="academy-article">' +
+      '<div class="academy-article-meta"><span class="academy-tag tag-beginner">Beginner</span><span>Injury Prevention</span></div>' +
+      '<h3>Universal Injury Prevention Rules</h3>' +
+      '<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:12px;margin-top:12px;">' +
+      injTip('Always warm up','2-3 progressively heavier warm-up sets before working weight. Never skip this. The 5 minutes you save are not worth the months of recovery.','#5b8dee') +
+      injTip('Train the posterior chain','Most lifters overtrain pushing muscles. Build a balanced program with equal or greater pulling volume.','#4ade80') +
+      injTip('Master technique first','No weight is worth a broken form rep. Leave your ego at the door for the first 6 months of any new movement.','#f59e0b') +
+      injTip('Sleep is non-negotiable','Under 7 hours of sleep measurably impairs reaction time, coordination, and tissue repair. Sleep more than you train.','#a78bfa') +
+      injTip('Respect the 10% rule','Do not increase total weekly volume by more than 10% per week. Tendons need time.','#e8624a') +
+      injTip('Pain is a signal, not a badge','Training through sharp, joint-specific pain causes chronic injuries. Discomfort is fine. Pain is not.','#f472b6') +
+      '</div></div>';
+  }
+
+  function injTip(title, body, color) {
+    return '<div style="background:var(--surface2);border-radius:10px;padding:14px;border-left:3px solid '+color+';">' +
+      '<div style="font-size:13px;font-weight:700;color:'+color+';margin-bottom:6px;">'+title+'</div>' +
+      '<div style="font-size:12px;color:var(--muted);line-height:1.6;">'+body+'</div></div>';
+  }
+
+  window.academyNav = function(section) {
+    activeSection = section;
+    draw();
+  };
+
+  draw();
+}
+
+
+
+// ===== ROUTINES =====
+var ROUTINES = [
+  {
+    id:'bro',
+    name:'Bro Split',
+    aka:'Body Part Split',
+    days:5,
+    level:'Beginner / Intermediate',
+    goal:'Hypertrophy',
+    frequency:'Each muscle 1x/week',
+    color:'#e8624a',
+    summary:'The classic bodybuilding split. One muscle group per day, high volume per session. Great for beginners because it is simple and easy to follow. Each muscle gets a full week of recovery.',
+    pros:['Simple to follow','High volume per muscle session','Full week recovery per muscle','Easy to add exercises'],
+    cons:['Each muscle only trained once per week — research suggests 2x is optimal','Volume per session can exceed recovery capacity','Missing a day means that muscle goes 2 weeks without training'],
+    schedule:[
+      {day:'Monday',focus:'Chest',exercises:['Bench Press 4x8-12','Incline Dumbbell Press 3x10-12','Cable Fly 3x12-15','Dip 3x10-15','Push-up 2x failure']},
+      {day:'Tuesday',focus:'Back',exercises:['Barbell Row 4x8-10','Pull-up 4x8-12','Lat Pulldown 3x10-12','Seated Cable Row 3x12','Face Pull 3x15-20']},
+      {day:'Wednesday',focus:'Shoulders',exercises:['Overhead Press 4x8-10','Dumbbell Lateral Raise 4x12-15','Front Raise 3x12','Rear Delt Fly 3x15','Shrug 4x12-15']},
+      {day:'Thursday',focus:'Arms',exercises:['Barbell Curl 4x10-12','Incline Dumbbell Curl 3x12','Hammer Curl 3x12','Skull Crusher 4x10-12','Tricep Pushdown 3x12-15','Overhead Tricep Extension 3x12']},
+      {day:'Friday',focus:'Legs',exercises:['Squat 4x8-10','Romanian Deadlift 3x10-12','Leg Press 3x12-15','Leg Curl 3x12-15','Leg Extension 3x12-15','Calf Raise 4x15-20']},
+      {day:'Saturday',focus:'Rest',exercises:[]},
+      {day:'Sunday',focus:'Rest',exercises:[]}
+    ],
+    science:'Research by Schoenfeld et al. (2016) suggests training each muscle 2x per week produces superior hypertrophy to 1x per week with equal volume. The bro split can be effective if volume and effort are high, but more advanced lifters typically benefit from higher frequency approaches.'
+  },
+  {
+    id:'ppl',
+    name:'Push / Pull / Legs',
+    aka:'PPL Split',
+    days:6,
+    level:'Intermediate',
+    goal:'Hypertrophy + Strength',
+    frequency:'Each muscle 2x/week',
+    color:'#5b8dee',
+    summary:'One of the most popular and evidence-supported splits. Groups muscles by movement pattern. Each muscle gets trained twice per week which aligns with research on optimal training frequency for hypertrophy.',
+    pros:['Each muscle trained 2x/week','Logical movement-based grouping','Excellent volume distribution','Highly flexible and customizable'],
+    cons:['6 days/week is demanding — recovery must be prioritized','Not ideal for true beginners','Requires good program design to avoid overlap fatigue'],
+    schedule:[
+      {day:'Monday',focus:'Push',exercises:['Bench Press 4x6-10','Overhead Press 3x8-10','Incline Dumbbell Press 3x10-12','Lateral Raise 4x12-15','Tricep Pushdown 3x12-15','Skull Crusher 3x10-12']},
+      {day:'Tuesday',focus:'Pull',exercises:['Deadlift 3x5','Pull-up 4x6-10','Barbell Row 3x8-10','Lat Pulldown 3x10-12','Face Pull 4x15-20','Barbell Curl 3x10-12','Hammer Curl 3x12']},
+      {day:'Wednesday',focus:'Legs',exercises:['Squat 4x6-10','Romanian Deadlift 3x10-12','Leg Press 3x12-15','Leg Curl 3x12-15','Leg Extension 3x12-15','Calf Raise 4x15-20']},
+      {day:'Thursday',focus:'Push',exercises:['Overhead Press 4x6-10','Incline Bench Press 3x8-10','Cable Fly 3x12-15','Lateral Raise 4x12-15','Front Raise 3x12','Overhead Tricep Extension 3x12-15']},
+      {day:'Friday',focus:'Pull',exercises:['Weighted Pull-up 4x6-8','Dumbbell Row 4x10-12','Seated Cable Row 3x12','Rear Delt Fly 3x15','Preacher Curl 3x10-12','Incline Dumbbell Curl 3x12']},
+      {day:'Saturday',focus:'Legs',exercises:['Romanian Deadlift 4x8-10','Hack Squat 3x10-12','Bulgarian Split Squat 3x10 each','Leg Curl 3x12-15','Calf Raise 4x15-20']},
+      {day:'Sunday',focus:'Rest',exercises:[]}
+    ],
+    science:'PPL is well-supported by the research on training frequency. Krieger (2010) meta-analysis found 2x weekly training frequency produced 28% more hypertrophy than 1x. The movement-based grouping also minimizes overlap fatigue between sessions.'
+  },
+  {
+    id:'ul',
+    name:'Upper / Lower Split',
+    aka:'4-Day Upper Lower',
+    days:4,
+    level:'Beginner / Intermediate',
+    goal:'Strength + Hypertrophy',
+    frequency:'Each muscle 2x/week',
+    color:'#4ade80',
+    summary:'Four days per week split into upper and lower body days. Excellent balance of frequency, volume, and recovery. One of the most recommended splits for natural lifters and beginners moving past full-body training.',
+    pros:['Only 4 days/week — sustainable long term','Each muscle 2x/week','Good balance of strength and size','Easy to add progressive overload'],
+    cons:['Upper body sessions can be long if many exercises added','Lower body days are fatiguing','Less volume per session than bro split'],
+    schedule:[
+      {day:'Monday',focus:'Upper (Strength)',exercises:['Bench Press 4x4-6','Barbell Row 4x4-6','Overhead Press 3x6-8','Pull-up 3x6-8','Barbell Curl 3x8-10','Skull Crusher 3x8-10']},
+      {day:'Tuesday',focus:'Lower (Strength)',exercises:['Squat 4x4-6','Romanian Deadlift 3x6-8','Leg Press 3x8-10','Leg Curl 3x10-12','Calf Raise 4x12-15']},
+      {day:'Wednesday',focus:'Rest',exercises:[]},
+      {day:'Thursday',focus:'Upper (Hypertrophy)',exercises:['Incline Dumbbell Press 4x8-12','Cable Row 4x10-12','Dumbbell Shoulder Press 3x10-12','Lat Pulldown 3x10-12','Lateral Raise 3x12-15','Face Pull 3x15-20','Dumbbell Curl 3x10-12','Tricep Pushdown 3x12-15']},
+      {day:'Friday',focus:'Lower (Hypertrophy)',exercises:['Deadlift 3x4-6','Hack Squat 3x10-12','Bulgarian Split Squat 3x10-12','Leg Extension 3x12-15','Leg Curl 3x12-15','Calf Raise 4x15-20']},
+      {day:'Saturday',focus:'Rest',exercises:[]},
+      {day:'Sunday',focus:'Rest',exercises:[]}
+    ],
+    science:'The upper/lower split was popularized by Layne Norton and is frequently recommended in the scientific literature. The separation into strength-focused and hypertrophy-focused days (as above) incorporates daily undulating periodization, which research shows can be superior to a single rep scheme.'
+  },
+  {
+    id:'fullbody',
+    name:'Full Body',
+    aka:'3-Day Full Body',
+    days:3,
+    level:'Beginner',
+    goal:'Strength + General Fitness',
+    frequency:'Each muscle 3x/week',
+    color:'#f59e0b',
+    summary:'Train the whole body every session, three times per week. The highest frequency approach and the gold standard for beginners. Every muscle trained 3x per week maximizes the novice adaptation window. Also excellent for busy schedules.',
+    pros:['Highest training frequency — ideal for beginners','Maximum skill practice on compound lifts','Flexible — easy to fit into any schedule','Excellent for strength development'],
+    cons:['Volume per muscle per session is low','Less suitable for advanced hypertrophy goals','Sessions become long as you get stronger'],
+    schedule:[
+      {day:'Monday',focus:'Full Body A',exercises:['Squat 3x5','Bench Press 3x5','Barbell Row 3x5','Pull-up 3x5-8','Overhead Press 2x8','Core work 3x']},
+      {day:'Tuesday',focus:'Rest',exercises:[]},
+      {day:'Wednesday',focus:'Full Body B',exercises:['Squat 3x5','Overhead Press 3x5','Deadlift 1x5','Pull-up 3x5-8','Bench Press 2x8','Core work 3x']},
+      {day:'Thursday',focus:'Rest',exercises:[]},
+      {day:'Friday',focus:'Full Body A',exercises:['Squat 3x5','Bench Press 3x5','Barbell Row 3x5','Pull-up 3x5-8','Overhead Press 2x8','Core work 3x']},
+      {day:'Saturday',focus:'Rest',exercises:[]},
+      {day:'Sunday',focus:'Rest',exercises:[]}
+    ],
+    science:'Starting Strength (Rippetoe) and StrongLifts 5x5 are the most famous full body programs. Research consistently shows beginners make their fastest strength and size gains with higher frequency on compound movements. The novice effect — rapid neural adaptations — is best exploited with frequent practice of the lifts.'
+  },
+  {
+    id:'531',
+    name:'5/3/1',
+    aka:'Wendler 5/3/1',
+    days:4,
+    level:'Intermediate / Advanced',
+    goal:'Strength',
+    frequency:'Main lifts 1x/week, accessories vary',
+    color:'#a78bfa',
+    summary:'Jim Wendler\'s legendary strength program built around four main lifts — squat, bench, deadlift, and overhead press. Uses a training max (90% of 1RM) and cycles through rep schemes over four weeks. Known for its sustainability and long-term results.',
+    pros:['Extremely sustainable — designed for years of use','Built-in deloads prevent burnout','Simple to follow','Excellent for intermediate/advanced lifters'],
+    cons:['Progress is slower than linear programs','Not ideal for pure hypertrophy goals','Requires knowing your 1RM for setup'],
+    schedule:[
+      {day:'Monday',focus:'Squat + Accessories',exercises:['Squat — Week 1: 3x5, Week 2: 3x3, Week 3: 5/3/1, Week 4: Deload','Romanian Deadlift 3x10','Leg Press 3x10','Leg Curl 3x10','Core work']},
+      {day:'Tuesday',focus:'Rest',exercises:[]},
+      {day:'Wednesday',focus:'Bench + Accessories',exercises:['Bench Press — Week 1: 3x5, Week 2: 3x3, Week 3: 5/3/1, Week 4: Deload','Dumbbell Row 3x10','Pull-up 3x10','Lateral Raise 3x15','Tricep work 3x10']},
+      {day:'Thursday',focus:'Rest',exercises:[]},
+      {day:'Friday',focus:'Deadlift + Accessories',exercises:['Deadlift — Week 1: 3x5, Week 2: 3x3, Week 3: 5/3/1, Week 4: Deload','Good Morning 3x10','Leg Press 3x10','Hanging Leg Raise 3x10']},
+      {day:'Saturday',focus:'Overhead Press + Accessories',exercises:['Overhead Press — Week 1: 3x5, Week 2: 3x3, Week 3: 5/3/1, Week 4: Deload','Chin-up 3x10','Dumbbell Bench 3x10','Face Pull 3x15','Bicep Curl 3x10']},
+      {day:'Sunday',focus:'Rest',exercises:[]}
+    ],
+    science:'5/3/1 uses submaximal training (based on 90% training max) which reduces injury risk while allowing long-term progressive overload. The four-week wave loading cycle (5s, 3s, 1s, deload) manages fatigue effectively. Wendler\'s program is one of the most widely used intermediate-advanced programs in powerlifting.'
+  },
+  {
+    id:'phul',
+    name:'PHUL',
+    aka:'Power Hypertrophy Upper Lower',
+    days:4,
+    level:'Intermediate',
+    goal:'Strength + Hypertrophy',
+    frequency:'Each muscle 2x/week',
+    color:'#f472b6',
+    summary:'Combines powerlifting and bodybuilding principles. Two power days focused on heavy compound lifts (3-5 reps) and two hypertrophy days with higher volume (8-12 reps). Best of both worlds for intermediate lifters who want strength and size.',
+    pros:['Combines strength and hypertrophy training','Each muscle trained twice per week','Variety keeps training interesting','Strong scientific basis'],
+    cons:['4 days per week required','Power days can be very taxing','Needs good programming to avoid overtraining'],
+    schedule:[
+      {day:'Monday',focus:'Upper Power',exercises:['Bench Press 3x3-5','Barbell Row 3x3-5','Overhead Press 3x5-8','Pull-up 3x5-8','Barbell Curl 3x6-8','Skull Crusher 3x6-8']},
+      {day:'Tuesday',focus:'Lower Power',exercises:['Squat 3x3-5','Deadlift 3x3-5','Leg Press 3x10-12','Leg Curl 3x10-12','Calf Raise 3x8-10']},
+      {day:'Wednesday',focus:'Rest',exercises:[]},
+      {day:'Thursday',focus:'Upper Hypertrophy',exercises:['Incline Bench Press 3x8-12','Cable Row 3x8-12','Dumbbell Shoulder Press 3x8-12','Lat Pulldown 3x8-12','Lateral Raise 3x10-15','Face Pull 3x12-15','Hammer Curl 3x8-12','Tricep Pushdown 3x8-12']},
+      {day:'Friday',focus:'Lower Hypertrophy',exercises:['Squat 3x8-12','Romanian Deadlift 3x8-12','Leg Extension 3x10-15','Leg Curl 3x10-15','Hack Squat 3x10-12','Calf Raise 3x12-15']},
+      {day:'Saturday',focus:'Rest',exercises:[]},
+      {day:'Sunday',focus:'Rest',exercises:[]}
+    ],
+    science:'PHUL was designed by Brandon Lilly and popularized by fitness researcher Layne Norton. The combination of heavy compound work and higher-rep accessory work targets both myofibrillar hypertrophy (from heavy loads) and sarcoplasmic hypertrophy (from metabolic stress), potentially optimizing total muscle growth.'
+  }
+];
+
+function renderRoutines() {
+  var el = document.getElementById('tab-routines');
+  var selected = null;
+
+  function drawList() {
+    var html = '<div style="margin-bottom:20px;">' +
+      '<div style="font-size:22px;font-weight:800;margin-bottom:4px;">Workout Routines</div>' +
+      '<div style="font-size:13px;color:var(--muted);">Science-based programs for every goal and schedule. Click any routine to see the full program.</div>' +
+      '</div>';
+
+    html += '<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:14px;">';
+    ROUTINES.forEach(function(r) {
+      html += '<div class="routine-card" onclick="selectRoutine(\''+r.id+'\')" style="background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:20px;cursor:pointer;transition:border-color 0.2s;border-top:3px solid '+r.color+';">' +
+        '<div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px;">' +
+        '<div><div style="font-size:17px;font-weight:800;">'+r.name+'</div>' +
+        '<div style="font-size:11px;color:var(--muted);margin-top:2px;">aka '+r.aka+'</div></div>' +
+        '<div style="text-align:right;">' +
+        '<div style="font-size:20px;font-weight:800;color:'+r.color+';">'+r.days+'<span style="font-size:11px;font-weight:400;color:var(--muted);"> days</span></div>' +
+        '</div></div>' +
+        '<div style="font-size:12px;color:var(--muted);margin-bottom:12px;line-height:1.6;">'+r.summary.slice(0,120)+'...</div>' +
+        '<div style="display:flex;gap:6px;flex-wrap:wrap;">' +
+        '<span style="padding:3px 10px;border-radius:20px;font-size:11px;font-weight:700;background:'+r.color+'22;color:'+r.color+';">'+r.goal+'</span>' +
+        '<span style="padding:3px 10px;border-radius:20px;font-size:11px;background:var(--surface2);color:var(--muted);">'+r.level+'</span>' +
+        '<span style="padding:3px 10px;border-radius:20px;font-size:11px;background:var(--surface2);color:var(--muted);">'+r.frequency+'</span>' +
+        '</div></div>';
+    });
+    html += '</div>';
+    el.innerHTML = html;
+  }
+
+  function drawDetail(r) {
+    var focusColors = {
+      'Rest':'var(--surface2)',
+      'Chest':'rgba(91,141,238,0.15)',
+      'Back':'rgba(232,98,74,0.15)',
+      'Shoulders':'rgba(74,222,128,0.15)',
+      'Arms':'rgba(245,158,11,0.15)',
+      'Legs':'rgba(167,139,250,0.15)',
+      'Push':'rgba(91,141,238,0.15)',
+      'Pull':'rgba(232,98,74,0.15)',
+      'Upper (Strength)':'rgba(91,141,238,0.15)',
+      'Upper (Hypertrophy)':'rgba(91,141,238,0.2)',
+      'Lower (Strength)':'rgba(74,222,128,0.15)',
+      'Lower (Hypertrophy)':'rgba(74,222,128,0.2)',
+      'Full Body A':'rgba(245,158,11,0.15)',
+      'Full Body B':'rgba(245,158,11,0.2)',
+      'Upper Power':'rgba(91,141,238,0.2)',
+      'Lower Power':'rgba(74,222,128,0.2)',
+      'Upper Hypertrophy':'rgba(91,141,238,0.15)',
+      'Lower Hypertrophy':'rgba(74,222,128,0.15)'
+    };
+    function dayColor(focus) {
+      if(focus==='Rest') return 'var(--surface2)';
+      var keys = Object.keys(focusColors);
+      for(var i=0;i<keys.length;i++) { if(focus.indexOf(keys[i])>-1) return focusColors[keys[i]]; }
+      return 'rgba(91,141,238,0.1)';
+    }
+
+    var html = '<button onclick="selectRoutine(null)" style="background:none;border:none;color:var(--muted);cursor:pointer;font-family:Syne,sans-serif;font-size:13px;margin-bottom:20px;padding:0;">&larr; Back to routines</button>';
+
+    html += '<div style="border-top:3px solid '+r.color+';background:var(--surface);border-radius:0 0 14px 14px;padding:24px;margin-bottom:16px;">';
+    html += '<div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:12px;margin-bottom:16px;">';
+    html += '<div><div style="font-size:26px;font-weight:800;letter-spacing:-0.5px;">'+r.name+'</div>';
+    html += '<div style="font-size:13px;color:var(--muted);">'+r.aka+'</div></div>';
+    html += '<div style="display:flex;gap:8px;flex-wrap:wrap;">';
+    html += '<span style="padding:5px 14px;border-radius:20px;font-size:12px;font-weight:700;background:'+r.color+'22;color:'+r.color+';">'+r.goal+'</span>';
+    html += '<span style="padding:5px 14px;border-radius:20px;font-size:12px;background:var(--surface2);color:var(--muted);">'+r.level+'</span>';
+    html += '<span style="padding:5px 14px;border-radius:20px;font-size:12px;background:var(--surface2);color:var(--muted);">'+r.days+' days/week</span>';
     html += '</div></div>';
-  });
-  html += '</div>';
-  el.innerHTML = html;
-}
 
-function addPlanEx(day){
-  var sel = document.getElementById('plan-sel-'+day);
-  if(!sel||!sel.value) return;
-  var plan = lsGet('workout_plan') || {};
-  PLAN_DAYS.forEach(function(d){ if(!plan[d]) plan[d]=[]; });
-  plan[day].push(sel.value);
-  lsSet('workout_plan', plan);
-  rendered['planner'] = false;
-  renderPlanner();
-}
-function removePlanEx(day, idx){
-  var plan = lsGet('workout_plan') || {};
-  if(!plan[day]) return;
-  plan[day].splice(idx, 1);
-  lsSet('workout_plan', plan);
-  rendered['planner'] = false;
-  renderPlanner();
-}
-function clearPlan(){
-  lsSet('workout_plan', {});
-  rendered['planner'] = false;
-  renderPlanner();
-}
+    html += '<p style="font-size:14px;color:var(--muted);line-height:1.8;margin-bottom:20px;">'+r.summary+'</p>';
 
-// ===== EXERCISE LIBRARY =====
-function renderLibrary(){
-  var el = document.getElementById('tab-library');
-  el.innerHTML = '<div style="margin-bottom:16px;">' +
-    '<input type="text" id="lib-search" placeholder="Search by exercise or muscle..." ' +
-    'style="width:100%;max-width:400px;padding:10px 14px;background:var(--surface);border:1px solid var(--border);border-radius:8px;color:var(--text);font-family:DM Mono;font-size:13px;outline:none;"/></div>' +
-    '<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:12px;" id="lib-items"></div>';
-  drawLibrary('');
-  document.getElementById('lib-search').addEventListener('input', function(){ drawLibrary(this.value); });
-}
+    html += '<div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:0;">';
+    html += '<div><div style="font-size:11px;text-transform:uppercase;letter-spacing:0.06em;color:var(--muted);margin-bottom:10px;">Pros</div>';
+    r.pros.forEach(function(p){ html += '<div style="display:flex;gap:8px;align-items:flex-start;margin-bottom:7px;font-size:13px;"><span style="color:#4ade80;flex-shrink:0;">&#x2713;</span><span style="color:var(--muted);">'+p+'</span></div>'; });
+    html += '</div>';
+    html += '<div><div style="font-size:11px;text-transform:uppercase;letter-spacing:0.06em;color:var(--muted);margin-bottom:10px;">Cons</div>';
+    r.cons.forEach(function(c){ html += '<div style="display:flex;gap:8px;align-items:flex-start;margin-bottom:7px;font-size:13px;"><span style="color:#e8624a;flex-shrink:0;">&#x2715;</span><span style="color:var(--muted);">'+c+'</span></div>'; });
+    html += '</div></div></div>';
 
-function drawLibrary(filter){
-  var container = document.getElementById('lib-items');
-  if(!container) return;
-  var filtered = LIBRARY.filter(function(ex){
-    if(!filter) return true;
-    var f = filter.toLowerCase();
-    return ex.name.toLowerCase().indexOf(f)>-1 || ex.muscle.toLowerCase().indexOf(f)>-1 || ex.type.toLowerCase().indexOf(f)>-1;
-  });
-  var html = '';
-  filtered.forEach(function(ex){
-    var tc = ex.type==='Compound'?'#5b8dee':'#f59e0b';
-    html += '<div class="health-card" style="margin-bottom:0;">';
-    html += '<div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px;">';
-    html += '<div><div style="font-size:15px;font-weight:800;">'+ex.name+'</div>';
-    html += '<div style="font-size:11px;color:var(--muted);">'+ex.muscle+'</div></div>';
-    html += '<span style="font-size:10px;font-weight:700;padding:3px 10px;border-radius:20px;background:rgba(255,255,255,0.05);color:'+tc+';">'+ex.type+'</span></div>';
-    html += '<div style="font-size:12px;line-height:1.6;margin-bottom:8px;"><b style="color:var(--muted);">Tips: </b>'+ex.tips+'</div>';
-    html += '<div style="font-size:12px;background:rgba(232,98,74,0.08);border-left:3px solid #e8624a;padding:8px 10px;border-radius:0 6px 6px 0;line-height:1.6;color:var(--muted);">';
-    html += '<b style="color:#e8624a;">Injury note: </b>'+ex.injury+'</div></div>';
-  });
-  container.innerHTML = html || '<p style="color:var(--muted);font-size:13px;">No exercises found.</p>';
+    // Weekly schedule
+    html += '<div style="font-size:14px;font-weight:700;margin-bottom:12px;">Weekly Schedule</div>';
+    html += '<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px;margin-bottom:16px;">';
+    r.schedule.forEach(function(day) {
+      var isRest = day.focus === 'Rest';
+      html += '<div style="background:'+dayColor(day.focus)+';border-radius:10px;padding:14px;border:1px solid var(--border);">';
+      html += '<div style="font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">'+day.day+'</div>';
+      html += '<div style="font-size:14px;font-weight:800;margin-bottom:8px;color:'+(isRest?'var(--muted)':r.color)+';">'+day.focus+'</div>';
+      if(day.exercises.length) {
+        day.exercises.forEach(function(ex){
+          html += '<div style="font-size:11px;color:var(--muted);margin-bottom:3px;font-family:DM Mono,monospace;">'+ex+'</div>';
+        });
+      } else {
+        html += '<div style="font-size:12px;color:var(--muted);">Active recovery or full rest</div>';
+      }
+      html += '</div>';
+    });
+    html += '</div>';
+
+    // Science section
+    html += '<div style="background:rgba(91,141,238,0.06);border-left:3px solid var(--accent);padding:16px;border-radius:0 10px 10px 0;margin-bottom:16px;">';
+    html += '<div style="font-size:11px;text-transform:uppercase;letter-spacing:0.06em;color:var(--accent);margin-bottom:8px;">Science Behind This Program</div>';
+    html += '<div style="font-size:13px;color:var(--muted);line-height:1.8;">'+r.science+'</div>';
+    html += '</div>';
+
+    el.innerHTML = html;
+  }
+
+  window.selectRoutine = function(id) {
+    if(!id) { drawList(); return; }
+    var r = null;
+    ROUTINES.forEach(function(x){ if(x.id===id) r=x; });
+    if(r) drawDetail(r);
+  };
+
+  drawList();
 }
 
 
-var renders = {overview:renderOverview,workouts:renderWorkouts,prs:renderPRs,exercises:renderExercises,progress:renderProgress,heatmap:renderHeatmap,tools:renderTools,health:renderHealth,insights:renderInsights,planner:renderPlanner,library:renderLibrary};
+var renders = {overview:renderOverview,workouts:renderWorkouts,prs:renderPRs,exercises:renderExercises,progress:renderProgress,heatmap:renderHeatmap,tools:renderTools,health:renderHealth,insights:renderInsights,routines:renderRoutines,academy:renderAcademy};
 
 </script>
 </body>

@@ -1365,7 +1365,7 @@ function renderAcademy() {
   }
 
   function drawAnatomy() {
-    var muscles = [
+    window.anatomyMuscles = [
       {name:'Chest (Pectoralis Major)',short:'chest',color:'#5b8dee',origin:'Clavicle, sternum, ribs 1-6',insertion:'Intertubercular groove of humerus',function:'Horizontal adduction, internal rotation, shoulder flexion',exercises:'Bench press, dumbbell fly, cable fly, push-up, dip',injury:'Pec tears most common during max effort bench. Warm up thoroughly. Avoid extreme stretching under load.'},
       {name:'Back (Latissimus Dorsi)',short:'lats',color:'#e8624a',origin:'Spinous processes T7-L5, iliac crest, lower ribs',insertion:'Intertubercular groove of humerus',function:'Shoulder extension, adduction, internal rotation',exercises:'Pull-up, lat pulldown, barbell row, dumbbell row, cable row',injury:'Lower back strain common when rows are performed with excessive lumbar flexion. Brace core.'},
       {name:'Shoulders (Deltoids)',short:'delts',color:'#4ade80',origin:'Clavicle (anterior), acromion (medial), spine of scapula (posterior)',insertion:'Deltoid tuberosity of humerus',function:'Shoulder abduction (all), flexion (anterior), extension (posterior)',exercises:'Overhead press, lateral raise, front raise, rear delt fly, face pull',injury:'Shoulder impingement from anterior delt overtraining. Prioritize rear delt and rotator cuff work.'},
@@ -1383,7 +1383,7 @@ function renderAcademy() {
 
     // Muscle selector
     html += '<div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px;">';
-    muscles.forEach(function(m,i){
+    window.anatomyMuscles.forEach(function(m,i){
       html += '<button onclick="showMuscle('+i+')" id="mbtn-'+i+'" style="padding:6px 14px;border-radius:20px;border:1px solid var(--border);background:transparent;color:var(--muted);font-family:Syne,sans-serif;font-size:12px;cursor:pointer;">'+m.short+'</button>';
     });
     html += '</div>';
@@ -1393,8 +1393,8 @@ function renderAcademy() {
     // Muscle diagram (custom SVG front/back)
     html += '<div class="academy-article"><h3 style="margin-bottom:16px;">Muscle Map</h3>';
     html += '<div class="muscle-diagram-wrap">';
-    html += buildFrontSVG();
-    html += buildBackSVG();
+    html += '<div class="muscle-svg-container">'+buildFrontSVG()+'</div>';
+    html += '<div class="muscle-svg-container">'+buildBackSVG()+'</div>';
     html += '</div>';
     html += '<div id="svg-muscle-info" class="muscle-info-panel" style="margin-top:0;">Hover or click a muscle on the diagram above.</div>';
     html += '</div>';
@@ -1969,7 +1969,8 @@ function svgMuscleClick(muscle) {
 
 
 function showMuscle(idx) {
-      var m = muscles[idx];
+    var m = window.anatomyMuscles ? window.anatomyMuscles[idx] : null;
+    if(!m) return;
       muscles.forEach(function(_, i){ var b=document.getElementById('mbtn-'+i); if(b){b.style.background='transparent';b.style.color='var(--muted)';b.style.borderColor='var(--border)';} });
       var btn = document.getElementById('mbtn-'+idx);
       if(btn){ btn.style.background=m.color+'33'; btn.style.color=m.color; btn.style.borderColor=m.color; }

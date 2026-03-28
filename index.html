@@ -1401,203 +1401,149 @@ function renderAcademy() {
 
     el.innerHTML = html;
 
-    // Muscle detail function
-    window.showMuscle = function(idx) {
-      var m = muscles[idx];
-      muscles.forEach(function(_, i){ var b=document.getElementById('mbtn-'+i); if(b){b.style.background='transparent';b.style.color='var(--muted)';b.style.borderColor='var(--border)';} });
-      var btn = document.getElementById('mbtn-'+idx);
-      if(btn){ btn.style.background=m.color+'33'; btn.style.color=m.color; btn.style.borderColor=m.color; }
-      var d = document.getElementById('muscle-detail');
-      if(d) d.innerHTML = '<strong style="color:'+m.color+';font-size:15px;">'+m.name+'</strong><br>' +
-        '<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:10px 0;font-size:12px;">' +
-        '<div><b style="color:var(--text);">Origin:</b><br>'+m.origin+'</div>' +
-        '<div><b style="color:var(--text);">Insertion:</b><br>'+m.insertion+'</div>' +
-        '</div>' +
-        '<div style="margin-bottom:8px;font-size:12px;"><b style="color:var(--text);">Function:</b> '+m.function+'</div>' +
-        '<div style="margin-bottom:8px;font-size:12px;"><b style="color:var(--text);">Best exercises:</b> '+m.exercises+'</div>' +
-        '<div style="font-size:12px;background:rgba(232,98,74,0.08);border-left:3px solid #e8624a;padding:8px 10px;border-radius:0 6px 6px 0;"><b style="color:#e8624a;">Injury note:</b> '+m.injury+'</div>';
-    };
   }
 
   function buildFrontSVG() {
-    var mg = 'class=\'muscle-group\'';
-    var mc = function(m){ return 'onclick=\'svgMuscleClick(\\\'' + m + '\\\')\''; };
-    return '<div>' +
-    '<div style="font-size:11px;color:var(--muted);text-align:center;margin-bottom:10px;text-transform:uppercase;letter-spacing:0.06em;">Front view</div>' +
-    '<svg width="220" height="480" viewBox="0 0 220 480" xmlns="http://www.w3.org/2000/svg" style="display:block;margin:0 auto;">' +
-    // Body fill base
-    '<path d="M110 8 Q125 8 132 18 Q140 28 138 44 Q136 58 128 64 Q120 68 110 68 Q100 68 92 64 Q84 58 82 44 Q80 28 88 18 Q95 8 110 8 Z" fill="#1a1a20" stroke="rgba(255,255,255,0.2)" stroke-width="1.5"/>' +
+    var s = '<div>';
+    s += '<div style="font-size:11px;color:var(--muted);text-align:center;margin-bottom:10px;text-transform:uppercase;letter-spacing:0.06em;">Front view</div>';
+    s += '<svg width="220" height="480" viewBox="0 0 220 480" xmlns="http://www.w3.org/2000/svg" style="display:block;margin:0 auto;">';
+    // Head
+    s += '<path d="M110 8 Q125 8 132 18 Q140 28 138 44 Q136 58 128 64 Q120 68 110 68 Q100 68 92 64 Q84 58 82 44 Q80 28 88 18 Q95 8 110 8 Z" fill="#1a1a20" stroke="rgba(255,255,255,0.2)" stroke-width="1.5"/>';
     // Neck
-    '<path d="M100 66 Q105 70 110 71 Q115 70 120 66 L122 82 Q116 86 110 87 Q104 86 98 82 Z" fill="#1a1a20" stroke="rgba(255,255,255,0.12)" stroke-width="1"/>' +
+    s += '<path d="M100 66 Q105 70 110 71 Q115 70 120 66 L122 82 Q116 86 110 87 Q104 86 98 82 Z" fill="#1a1a20" stroke="rgba(255,255,255,0.12)" stroke-width="1"/>';
     // Torso base
-    '<path d="M62 88 Q74 82 110 80 Q146 82 158 88 L162 180 Q155 195 140 198 Q125 200 110 200 Q95 200 80 198 Q65 195 58 180 Z" fill="#141418" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>' +
-    // LEFT CHEST pec major
-    '<path ' + mg + ' ' + mc('Chest') + ' d="M64 90 Q76 84 96 90 Q104 96 104 118 Q96 124 82 122 Q68 118 62 108 Q60 99 64 90 Z"/>' +
-    // RIGHT CHEST pec major
-    '<path ' + mg + ' ' + mc('Chest') + ' d="M156 90 Q144 84 124 90 Q116 96 116 118 Q124 124 138 122 Q152 118 158 108 Q160 99 156 90 Z"/>' +
+    s += '<path d="M62 88 Q74 82 110 80 Q146 82 158 88 L162 180 Q155 195 140 198 Q125 200 110 200 Q95 200 80 198 Q65 195 58 180 Z" fill="#141418" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>';
+    // LEFT CHEST
+    s += '<path class="muscle-group" onclick="svgMuscleClick(\'Chest\')" d="M64 90 Q76 84 96 90 Q104 96 104 118 Q96 124 82 122 Q68 118 62 108 Q60 99 64 90 Z"/>';
+    // RIGHT CHEST
+    s += '<path class="muscle-group" onclick="svgMuscleClick(\'Chest\')" d="M156 90 Q144 84 124 90 Q116 96 116 118 Q124 124 138 122 Q152 118 158 108 Q160 99 156 90 Z"/>';
     // Sternum line
-    '<line x1="110" y1="88" x2="110" y2="124" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>' +
+    s += '<line x1="110" y1="88" x2="110" y2="124" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>';
     // LEFT FRONT DELT
-    '<path ' + mg + ' ' + mc('Front Delts') + ' d="M56 84 Q62 78 72 82 Q78 88 76 100 Q70 106 62 102 Q54 96 54 88 Q55 86 56 84 Z"/>' +
+    s += '<path class="muscle-group" onclick="svgMuscleClick(\'Front Delts\')" d="M56 84 Q62 78 72 82 Q78 88 76 100 Q70 106 62 102 Q54 96 54 88 Z"/>';
     // RIGHT FRONT DELT
-    '<path ' + mg + ' ' + mc('Front Delts') + ' d="M164 84 Q158 78 148 82 Q142 88 144 100 Q150 106 158 102 Q166 96 166 88 Q165 86 164 84 Z"/>' +
+    s += '<path class="muscle-group" onclick="svgMuscleClick(\'Front Delts\')" d="M164 84 Q158 78 148 82 Q142 88 144 100 Q150 106 158 102 Q166 96 166 88 Z"/>';
     // LEFT BICEP
-    '<path ' + mg + ' ' + mc('Biceps') + ' d="M42 102 Q36 108 34 128 Q34 138 40 142 Q48 146 54 140 Q60 134 58 114 Q56 104 48 102 Q45 101 42 102 Z"/>' +
+    s += '<path class="muscle-group" onclick="svgMuscleClick(\'Biceps\')" d="M42 102 Q36 108 34 128 Q34 138 40 142 Q48 146 54 140 Q60 134 58 114 Q56 104 48 102 Z"/>';
     // RIGHT BICEP
-    '<path ' + mg + ' ' + mc('Biceps') + ' d="M178 102 Q184 108 186 128 Q186 138 180 142 Q172 146 166 140 Q160 134 162 114 Q164 104 172 102 Q175 101 178 102 Z"/>' +
+    s += '<path class="muscle-group" onclick="svgMuscleClick(\'Biceps\')" d="M178 102 Q184 108 186 128 Q186 138 180 142 Q172 146 166 140 Q160 134 162 114 Q164 104 172 102 Z"/>';
     // LEFT FOREARM
-    '<path ' + mg + ' ' + mc('Forearms') + ' d="M38 146 Q30 154 28 174 Q28 184 34 188 Q42 192 48 186 Q54 178 52 158 Q50 148 44 146 Z"/>' +
+    s += '<path class="muscle-group" onclick="svgMuscleClick(\'Forearms\')" d="M38 146 Q30 154 28 174 Q28 184 34 188 Q42 192 48 186 Q54 178 52 158 Q50 148 44 146 Z"/>';
     // RIGHT FOREARM
-    '<path ' + mg + ' ' + mc('Forearms') + ' d="M182 146 Q190 154 192 174 Q192 184 186 188 Q178 192 172 186 Q166 178 168 158 Q170 148 176 146 Z"/>' +
-    // ABS - rectus abdominis 6 sections
-    '<path ' + mg + ' ' + mc('Core') + ' d="M100 126 Q105 124 110 125 Q110 138 110 142 Q105 143 100 142 Q98 134 100 126 Z"/>' +
-    '<path ' + mg + ' ' + mc('Core') + ' d="M120 126 Q115 124 110 125 Q110 138 110 142 Q115 143 120 142 Q122 134 120 126 Z"/>' +
-    '<path ' + mg + ' ' + mc('Core') + ' d="M100 145 Q105 143 110 144 Q110 157 110 161 Q105 162 100 161 Q98 153 100 145 Z"/>' +
-    '<path ' + mg + ' ' + mc('Core') + ' d="M120 145 Q115 143 110 144 Q110 157 110 161 Q115 162 120 161 Q122 153 120 145 Z"/>' +
-    '<path ' + mg + ' ' + mc('Core') + ' d="M101 164 Q105 162 110 163 Q110 175 110 179 Q105 180 101 179 Q99 171 101 164 Z"/>' +
-    '<path ' + mg + ' ' + mc('Core') + ' d="M119 164 Q115 162 110 163 Q110 175 110 179 Q115 180 119 179 Q121 171 119 164 Z"/>' +
+    s += '<path class="muscle-group" onclick="svgMuscleClick(\'Forearms\')" d="M182 146 Q190 154 192 174 Q192 184 186 188 Q178 192 172 186 Q166 178 168 158 Q170 148 176 146 Z"/>';
+    // ABS 6 sections
+    s += '<path class="muscle-group" onclick="svgMuscleClick(\'Core\')" d="M100 126 Q105 124 110 125 Q110 142 105 143 Q100 142 98 134 Z"/>';
+    s += '<path class="muscle-group" onclick="svgMuscleClick(\'Core\')" d="M120 126 Q115 124 110 125 Q110 142 115 143 Q120 142 122 134 Z"/>';
+    s += '<path class="muscle-group" onclick="svgMuscleClick(\'Core\')" d="M100 145 Q105 143 110 144 Q110 161 105 162 Q100 161 98 153 Z"/>';
+    s += '<path class="muscle-group" onclick="svgMuscleClick(\'Core\')" d="M120 145 Q115 143 110 144 Q110 161 115 162 Q120 161 122 153 Z"/>';
+    s += '<path class="muscle-group" onclick="svgMuscleClick(\'Core\')" d="M101 164 Q105 162 110 163 Q110 179 105 180 Q101 179 99 171 Z"/>';
+    s += '<path class="muscle-group" onclick="svgMuscleClick(\'Core\')" d="M119 164 Q115 162 110 163 Q110 179 115 180 Q119 179 121 171 Z"/>';
     // OBLIQUES
-    '<path ' + mg + ' ' + mc('Core') + ' d="M94 126 Q88 132 84 148 Q84 158 90 162 Q96 164 100 158 Q102 148 100 134 Q98 126 94 126 Z"/>' +
-    '<path ' + mg + ' ' + mc('Core') + ' d="M126 126 Q132 132 136 148 Q136 158 130 162 Q124 164 120 158 Q118 148 120 134 Q122 126 126 126 Z"/>' +
-    // Serratus anterior (side ribs)
-    '<path ' + mg + ' ' + mc('Core') + ' d="M78 100 Q74 110 76 130 Q80 134 84 130 Q84 114 82 104 Z"/>' +
-    '<path ' + mg + ' ' + mc('Core') + ' d="M142 100 Q146 110 144 130 Q140 134 136 130 Q136 114 138 104 Z"/>' +
-    // HIP / PELVIS area
-    '<path d="M84 182 Q94 178 110 178 Q126 178 136 182 Q142 190 140 204 Q130 212 110 213 Q90 212 80 204 Q78 190 84 182 Z" fill="#1a1a20" stroke="rgba(255,255,255,0.07)" stroke-width="1"/>' +
-    // LEFT QUAD - outer sweep (vastus lateralis)
-    '<path ' + mg + ' ' + mc('Quads') + ' d="M82 212 Q72 218 66 240 Q62 258 64 278 Q70 288 80 286 Q90 284 92 264 Q94 244 92 224 Q90 214 82 212 Z"/>' +
-    // RIGHT QUAD - outer sweep
-    '<path ' + mg + ' ' + mc('Quads') + ' d="M138 212 Q148 218 154 240 Q158 258 156 278 Q150 288 140 286 Q130 284 128 264 Q126 244 128 224 Q130 214 138 212 Z"/>' +
-    // LEFT QUAD - rectus femoris (center)
-    '<path ' + mg + ' ' + mc('Quads') + ' d="M96 214 Q103 210 110 212 Q110 240 108 268 Q105 278 101 278 Q97 278 96 268 Q94 244 96 214 Z"/>' +
-    // RIGHT QUAD - rectus femoris (center)
-    '<path ' + mg + ' ' + mc('Quads') + ' d="M124 214 Q117 210 110 212 Q110 240 112 268 Q115 278 119 278 Q123 278 124 268 Q126 244 124 214 Z"/>' +
-    // LEFT VMO (inner quad teardrop)
-    '<path ' + mg + ' ' + mc('Quads') + ' d="M88 264 Q84 272 86 282 Q92 290 98 286 Q102 280 100 270 Q96 262 88 264 Z"/>' +
-    // RIGHT VMO
-    '<path ' + mg + ' ' + mc('Quads') + ' d="M132 264 Q136 272 134 282 Q128 290 122 286 Q118 280 120 270 Q124 262 132 264 Z"/>' +
-    // LEFT ADDUCTOR (inner thigh)
-    '<path ' + mg + ' ' + mc('Quads') + ' d="M108 216 Q102 222 100 244 Q100 260 104 272 Q108 276 110 272 Q110 256 110 236 Q110 220 108 216 Z"/>' +
-    // RIGHT ADDUCTOR
-    '<path ' + mg + ' ' + mc('Quads') + ' d="M112 216 Q118 222 120 244 Q120 260 116 272 Q112 276 110 272 Q110 256 110 236 Q110 220 112 216 Z"/>' +
-    // KNEE area
-    '<ellipse cx="84" cy="292" rx="12" ry="8" fill="#1a1a20" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>' +
-    '<ellipse cx="136" cy="292" rx="12" ry="8" fill="#1a1a20" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>' +
-    // LEFT CALF gastrocnemius
-    '<path ' + mg + ' ' + mc('Calves') + ' d="M72 302 Q66 312 66 336 Q68 356 76 366 Q82 372 86 366 Q90 356 88 334 Q88 314 82 304 Q78 300 72 302 Z"/>' +
-    // LEFT CALF inner head
-    '<path ' + mg + ' ' + mc('Calves') + ' d="M90 304 Q86 314 86 336 Q86 354 90 364 Q94 370 98 364 Q100 352 98 332 Q96 314 92 306 Z"/>' +
-    // RIGHT CALF gastrocnemius
-    '<path ' + mg + ' ' + mc('Calves') + ' d="M148 302 Q154 312 154 336 Q152 356 144 366 Q138 372 134 366 Q130 356 132 334 Q132 314 138 304 Q142 300 148 302 Z"/>' +
-    // RIGHT CALF inner head
-    '<path ' + mg + ' ' + mc('Calves') + ' d="M130 304 Q134 314 134 336 Q134 354 130 364 Q126 370 122 364 Q120 352 122 332 Q124 314 128 306 Z"/>' +
-    // Shin / tibialis anterior
-    '<path d="M86 368 Q84 390 84 420 Q86 432 90 434 Q94 432 96 420 Q98 396 96 370 Z" fill="#1a1a20" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>' +
-    '<path d="M134 368 Q136 390 136 420 Q134 432 130 434 Q126 432 124 420 Q122 396 124 370 Z" fill="#1a1a20" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>' +
-    // Feet
-    '<ellipse cx="89" cy="444" rx="14" ry="8" fill="#1a1a20" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>' +
-    '<ellipse cx="131" cy="444" rx="14" ry="8" fill="#1a1a20" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>' +
-    // Muscle separation lines (subtle definition)
-    '<line x1="110" y1="126" x2="110" y2="180" stroke="rgba(255,255,255,0.05)" stroke-width="1"/>' +
-    '</svg></div>';
+    s += '<path class="muscle-group" onclick="svgMuscleClick(\'Core\')" d="M94 126 Q88 132 84 148 Q84 158 90 162 Q96 164 100 158 Q102 148 100 134 Z"/>';
+    s += '<path class="muscle-group" onclick="svgMuscleClick(\'Core\')" d="M126 126 Q132 132 136 148 Q136 158 130 162 Q124 164 120 158 Q118 148 120 134 Z"/>';
+    // SERRATUS
+    s += '<path class="muscle-group" onclick="svgMuscleClick(\'Core\')" d="M78 100 Q74 110 76 130 Q80 134 84 130 Q84 114 82 104 Z"/>';
+    s += '<path class="muscle-group" onclick="svgMuscleClick(\'Core\')" d="M142 100 Q146 110 144 130 Q140 134 136 130 Q136 114 138 104 Z"/>';
+    // HIP
+    s += '<path d="M84 182 Q94 178 110 178 Q126 178 136 182 Q142 190 140 204 Q130 212 110 213 Q90 212 80 204 Q78 190 84 182 Z" fill="#1a1a20" stroke="rgba(255,255,255,0.07)" stroke-width="1"/>';
+    // LEFT QUAD outer
+    s += '<path class="muscle-group" onclick="svgMuscleClick(\'Quads\')" d="M82 212 Q72 218 66 240 Q62 258 64 278 Q70 288 80 286 Q90 284 92 264 Q94 244 92 224 Q90 214 82 212 Z"/>';
+    // RIGHT QUAD outer
+    s += '<path class="muscle-group" onclick="svgMuscleClick(\'Quads\')" d="M138 212 Q148 218 154 240 Q158 258 156 278 Q150 288 140 286 Q130 284 128 264 Q126 244 128 224 Q130 214 138 212 Z"/>';
+    // LEFT QUAD center
+    s += '<path class="muscle-group" onclick="svgMuscleClick(\'Quads\')" d="M96 214 Q103 210 110 212 Q110 268 108 278 Q105 278 101 278 Q99 268 96 214 Z"/>';
+    // RIGHT QUAD center
+    s += '<path class="muscle-group" onclick="svgMuscleClick(\'Quads\')" d="M124 214 Q117 210 110 212 Q110 268 112 278 Q115 278 119 278 Q121 268 124 214 Z"/>';
+    // VMO left
+    s += '<path class="muscle-group" onclick="svgMuscleClick(\'Quads\')" d="M88 264 Q84 272 86 282 Q92 290 98 286 Q102 280 100 270 Q96 262 88 264 Z"/>';
+    // VMO right
+    s += '<path class="muscle-group" onclick="svgMuscleClick(\'Quads\')" d="M132 264 Q136 272 134 282 Q128 290 122 286 Q118 280 120 270 Q124 262 132 264 Z"/>';
+    // ADDUCTORS
+    s += '<path class="muscle-group" onclick="svgMuscleClick(\'Quads\')" d="M108 216 Q102 222 100 260 Q104 272 110 272 Q110 256 110 220 Z"/>';
+    s += '<path class="muscle-group" onclick="svgMuscleClick(\'Quads\')" d="M112 216 Q118 222 120 260 Q116 272 110 272 Q110 256 110 220 Z"/>';
+    // KNEES
+    s += '<ellipse cx="84" cy="292" rx="12" ry="8" fill="#1a1a20" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>';
+    s += '<ellipse cx="136" cy="292" rx="12" ry="8" fill="#1a1a20" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>';
+    // LEFT CALF
+    s += '<path class="muscle-group" onclick="svgMuscleClick(\'Calves\')" d="M72 302 Q64 314 64 342 Q66 362 76 370 Q84 376 88 368 Q92 356 90 334 Q88 314 80 304 Z"/>';
+    s += '<path class="muscle-group" onclick="svgMuscleClick(\'Calves\')" d="M92 304 Q88 318 88 342 Q88 360 94 368 Q100 372 104 366 Q106 354 104 334 Q102 316 96 306 Z"/>';
+    // RIGHT CALF
+    s += '<path class="muscle-group" onclick="svgMuscleClick(\'Calves\')" d="M148 302 Q156 314 156 342 Q154 362 144 370 Q136 376 132 368 Q128 356 130 334 Q132 314 140 304 Z"/>';
+    s += '<path class="muscle-group" onclick="svgMuscleClick(\'Calves\')" d="M128 304 Q132 318 132 342 Q132 360 126 368 Q120 372 116 366 Q114 354 116 334 Q118 316 124 306 Z"/>';
+    // SHINS
+    s += '<path d="M86 372 Q84 400 84 428 Q86 438 90 440 Q94 438 96 428 Q98 402 96 374 Z" fill="#1a1a20" stroke="rgba(255,255,255,0.07)" stroke-width="1"/>';
+    s += '<path d="M134 372 Q136 400 136 428 Q134 438 130 440 Q126 438 124 428 Q122 402 124 374 Z" fill="#1a1a20" stroke="rgba(255,255,255,0.07)" stroke-width="1"/>';
+    // FEET
+    s += '<ellipse cx="89" cy="450" rx="14" ry="8" fill="#1a1a20" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>';
+    s += '<ellipse cx="131" cy="450" rx="14" ry="8" fill="#1a1a20" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>';
+    s += '</svg></div>';
+    return s;
   }
 
   function buildBackSVG() {
-    var mg = 'class=\'muscle-group\'';
-    var mc = function(m){ return 'onclick=\'svgMuscleClick(\\\'' + m + '\\\')\''; };
-    return '<div>' +
-    '<div style="font-size:11px;color:var(--muted);text-align:center;margin-bottom:10px;text-transform:uppercase;letter-spacing:0.06em;">Back view</div>' +
-    '<svg width="220" height="480" viewBox="0 0 220 480" xmlns="http://www.w3.org/2000/svg" style="display:block;margin:0 auto;">' +
+    var s = '<div>';
+    s += '<div style="font-size:11px;color:var(--muted);text-align:center;margin-bottom:10px;text-transform:uppercase;letter-spacing:0.06em;">Back view</div>';
+    s += '<svg width="220" height="480" viewBox="0 0 220 480" xmlns="http://www.w3.org/2000/svg" style="display:block;margin:0 auto;">';
     // Head
-    '<path d="M110 8 Q125 8 132 18 Q140 28 138 44 Q136 58 128 64 Q120 68 110 68 Q100 68 92 64 Q84 58 82 44 Q80 28 88 18 Q95 8 110 8 Z" fill="#1a1a20" stroke="rgba(255,255,255,0.2)" stroke-width="1.5"/>' +
+    s += '<path d="M110 8 Q125 8 132 18 Q140 28 138 44 Q136 58 128 64 Q120 68 110 68 Q100 68 92 64 Q84 58 82 44 Q80 28 88 18 Q95 8 110 8 Z" fill="#1a1a20" stroke="rgba(255,255,255,0.2)" stroke-width="1.5"/>';
     // Neck
-    '<path d="M100 66 Q105 70 110 71 Q115 70 120 66 L122 82 Q116 86 110 87 Q104 86 98 82 Z" fill="#1a1a20" stroke="rgba(255,255,255,0.12)" stroke-width="1"/>' +
+    s += '<path d="M100 66 Q105 70 110 71 Q115 70 120 66 L122 82 Q116 86 110 87 Q104 86 98 82 Z" fill="#1a1a20" stroke="rgba(255,255,255,0.12)" stroke-width="1"/>';
     // Torso base
-    '<path d="M62 88 Q74 82 110 80 Q146 82 158 88 L162 200 Q150 210 110 212 Q70 210 58 200 Z" fill="#141418" stroke="rgba(255,255,255,0.05)" stroke-width="1"/>' +
-    // UPPER TRAPS - left side
-    '<path ' + mg + ' ' + mc('Traps') + ' d="M98 80 Q104 76 110 76 Q110 92 106 98 Q100 100 96 96 Q92 90 98 80 Z"/>' +
-    // UPPER TRAPS - right side
-    '<path ' + mg + ' ' + mc('Traps') + ' d="M122 80 Q116 76 110 76 Q110 92 114 98 Q120 100 124 96 Q128 90 122 80 Z"/>' +
-    // MID TRAPS spanning shoulders
-    '<path ' + mg + ' ' + mc('Traps') + ' d="M66 88 Q80 82 96 88 Q96 104 90 110 Q80 114 72 108 Q64 100 66 88 Z"/>' +
-    '<path ' + mg + ' ' + mc('Traps') + ' d="M154 88 Q140 82 124 88 Q124 104 130 110 Q140 114 148 108 Q156 100 154 88 Z"/>' +
-    // REAR DELTS left
-    '<path ' + mg + ' ' + mc('Rear Delts') + ' d="M56 86 Q62 80 72 84 Q78 92 76 106 Q68 112 60 106 Q52 98 54 90 Z"/>' +
-    // REAR DELTS right
-    '<path ' + mg + ' ' + mc('Rear Delts') + ' d="M164 86 Q158 80 148 84 Q142 92 144 106 Q152 112 160 106 Q168 98 166 90 Z"/>' +
-    // TRICEPS left - long head visible from back
-    '<path ' + mg + ' ' + mc('Triceps') + ' d="M42 104 Q36 112 34 134 Q34 146 40 150 Q48 154 56 148 Q62 140 60 120 Q58 106 50 104 Z"/>' +
-    // TRICEPS right
-    '<path ' + mg + ' ' + mc('Triceps') + ' d="M178 104 Q184 112 186 134 Q186 146 180 150 Q172 154 164 148 Q158 140 160 120 Q162 106 170 104 Z"/>' +
-    // FOREARMS back left
-    '<path ' + mg + ' ' + mc('Forearms') + ' d="M38 154 Q30 162 28 182 Q28 192 34 196 Q42 200 48 194 Q54 186 52 166 Q50 156 44 154 Z"/>' +
-    // FOREARMS back right
-    '<path ' + mg + ' ' + mc('Forearms') + ' d="M182 154 Q190 162 192 182 Q192 192 186 196 Q178 200 172 194 Q166 186 168 166 Q170 156 176 154 Z"/>' +
-    // LEFT LAT - large sweeping shape
-    '<path ' + mg + ' ' + mc('Back') + ' d="M58 96 Q50 108 48 132 Q48 152 56 162 Q68 170 82 166 Q92 160 94 144 Q96 128 90 110 Q84 96 72 92 Q64 90 58 96 Z"/>' +
-    // RIGHT LAT
-    '<path ' + mg + ' ' + mc('Back') + ' d="M162 96 Q170 108 172 132 Q172 152 164 162 Q152 170 138 166 Q128 160 126 144 Q124 128 130 110 Q136 96 148 92 Q156 90 162 96 Z"/>' +
-    // RHOMBOIDS / MID BACK
-    '<path ' + mg + ' ' + mc('Back') + ' d="M92 96 Q100 90 110 90 Q120 90 128 96 Q126 120 120 130 Q115 136 110 136 Q105 136 100 130 Q94 120 92 96 Z"/>' +
-    // LOWER BACK - erector spinae left
-    '<path ' + mg + ' ' + mc('Back') + ' d="M96 138 Q102 134 108 136 Q110 156 110 174 Q106 178 102 176 Q96 170 96 156 Z"/>' +
-    // LOWER BACK - erector spinae right
-    '<path ' + mg + ' ' + mc('Back') + ' d="M124 138 Q118 134 112 136 Q110 156 110 174 Q114 178 118 176 Q124 170 124 156 Z"/>' +
-    // HIP base
-    '<path d="M80 178 Q94 172 110 172 Q126 172 140 178 Q148 186 146 202 Q134 214 110 216 Q86 214 74 202 Q72 186 80 178 Z" fill="#1a1a20" stroke="rgba(255,255,255,0.07)" stroke-width="1"/>' +
-    // GLUTES left
-    '<path ' + mg + ' ' + mc('Glutes') + ' d="M76 182 Q66 188 62 206 Q60 220 68 228 Q78 234 92 230 Q102 224 104 210 Q104 196 98 186 Q90 178 76 182 Z"/>' +
-    // GLUTES right
-    '<path ' + mg + ' ' + mc('Glutes') + ' d="M144 182 Q154 188 158 206 Q160 220 152 228 Q142 234 128 230 Q118 224 116 210 Q116 196 122 186 Q130 178 144 182 Z"/>' +
-    // Glute cleft line
-    '<line x1="110" y1="180" x2="110" y2="230" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>' +
-    // LEFT HAMSTRING - biceps femoris outer
-    '<path ' + mg + ' ' + mc('Hamstrings') + ' d="M76 232 Q66 240 62 264 Q60 284 66 296 Q74 304 82 298 Q90 290 90 268 Q90 248 84 236 Q80 230 76 232 Z"/>' +
-    // LEFT HAMSTRING - semitendinosus inner
-    '<path ' + mg + ' ' + mc('Hamstrings') + ' d="M100 234 Q94 242 92 266 Q92 284 96 294 Q102 300 108 296 Q112 288 110 266 Q108 248 104 236 Z"/>' +
-    // RIGHT HAMSTRING - biceps femoris outer
-    '<path ' + mg + ' ' + mc('Hamstrings') + ' d="M144 232 Q154 240 158 264 Q160 284 154 296 Q146 304 138 298 Q130 290 130 268 Q130 248 136 236 Q140 230 144 232 Z"/>' +
-    // RIGHT HAMSTRING - semitendinosus inner
-    '<path ' + mg + ' ' + mc('Hamstrings') + ' d="M120 234 Q126 242 128 266 Q128 284 124 294 Q118 300 112 296 Q108 288 110 266 Q112 248 116 236 Z"/>' +
-    // KNEE back
-    '<ellipse cx="84" cy="302" rx="12" ry="8" fill="#1a1a20" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>' +
-    '<ellipse cx="136" cy="302" rx="12" ry="8" fill="#1a1a20" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>' +
-    // LEFT CALF back - gastrocnemius lateral head
-    '<path ' + mg + ' ' + mc('Calves') + ' d="M70 310 Q62 320 62 346 Q64 366 72 374 Q80 380 86 374 Q92 364 90 342 Q88 320 80 312 Q76 308 70 310 Z"/>' +
-    // LEFT CALF - medial head
-    '<path ' + mg + ' ' + mc('Calves') + ' d="M92 312 Q88 322 88 346 Q88 364 94 372 Q100 376 104 370 Q106 358 104 338 Q102 320 96 314 Z"/>' +
-    // RIGHT CALF back - gastrocnemius lateral head
-    '<path ' + mg + ' ' + mc('Calves') + ' d="M150 310 Q158 320 158 346 Q156 366 148 374 Q140 380 134 374 Q128 364 130 342 Q132 320 140 312 Q144 308 150 310 Z"/>' +
-    // RIGHT CALF - medial head
-    '<path ' + mg + ' ' + mc('Calves') + ' d="M128 312 Q132 322 132 346 Q132 364 126 372 Q120 376 116 370 Q114 358 116 338 Q118 320 124 314 Z"/>' +
-    // Achilles / lower leg
-    '<path d="M86 376 Q84 400 84 430 Q86 440 90 442 Q94 440 96 430 Q98 406 96 378 Z" fill="#1a1a20" stroke="rgba(255,255,255,0.07)" stroke-width="1"/>' +
-    '<path d="M134 376 Q136 400 136 430 Q134 440 130 442 Q126 440 124 430 Q122 406 124 378 Z" fill="#1a1a20" stroke="rgba(255,255,255,0.07)" stroke-width="1"/>' +
-    // Feet
-    '<ellipse cx="89" cy="452" rx="14" ry="8" fill="#1a1a20" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>' +
-    '<ellipse cx="131" cy="452" rx="14" ry="8" fill="#1a1a20" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>' +
-    '</svg></div>';
+    s += '<path d="M62 88 Q74 82 110 80 Q146 82 158 88 L162 200 Q150 210 110 212 Q70 210 58 200 Z" fill="#141418" stroke="rgba(255,255,255,0.05)" stroke-width="1"/>';
+    // UPPER TRAPS
+    s += '<path class="muscle-group" onclick="svgMuscleClick(\'Traps\')" d="M98 80 Q104 76 110 76 Q110 96 106 100 Q100 102 96 96 Q92 88 98 80 Z"/>';
+    s += '<path class="muscle-group" onclick="svgMuscleClick(\'Traps\')" d="M122 80 Q116 76 110 76 Q110 96 114 100 Q120 102 124 96 Q128 88 122 80 Z"/>';
+    // MID TRAPS
+    s += '<path class="muscle-group" onclick="svgMuscleClick(\'Traps\')" d="M66 88 Q80 82 96 90 Q96 108 88 114 Q78 116 70 108 Q62 100 66 88 Z"/>';
+    s += '<path class="muscle-group" onclick="svgMuscleClick(\'Traps\')" d="M154 88 Q140 82 124 90 Q124 108 132 114 Q142 116 150 108 Q158 100 154 88 Z"/>';
+    // REAR DELTS
+    s += '<path class="muscle-group" onclick="svgMuscleClick(\'Rear Delts\')" d="M56 88 Q62 80 72 84 Q78 92 76 108 Q68 114 60 108 Q52 100 56 88 Z"/>';
+    s += '<path class="muscle-group" onclick="svgMuscleClick(\'Rear Delts\')" d="M164 88 Q158 80 148 84 Q142 92 144 108 Q152 114 160 108 Q168 100 164 88 Z"/>';
+    // TRICEPS
+    s += '<path class="muscle-group" onclick="svgMuscleClick(\'Triceps\')" d="M42 106 Q36 114 34 136 Q34 148 40 152 Q48 156 56 150 Q62 142 60 122 Q58 108 50 106 Z"/>';
+    s += '<path class="muscle-group" onclick="svgMuscleClick(\'Triceps\')" d="M178 106 Q184 114 186 136 Q186 148 180 152 Q172 156 164 150 Q158 142 160 122 Q162 108 170 106 Z"/>';
+    // FOREARMS back
+    s += '<path class="muscle-group" onclick="svgMuscleClick(\'Forearms\')" d="M38 156 Q30 164 28 184 Q28 194 34 198 Q42 202 48 196 Q54 188 52 168 Q50 158 44 156 Z"/>';
+    s += '<path class="muscle-group" onclick="svgMuscleClick(\'Forearms\')" d="M182 156 Q190 164 192 184 Q192 194 186 198 Q178 202 172 196 Q166 188 168 168 Q170 158 176 156 Z"/>';
+    // LATS
+    s += '<path class="muscle-group" onclick="svgMuscleClick(\'Back\')" d="M58 98 Q50 110 48 136 Q48 156 58 166 Q70 174 84 168 Q94 162 94 146 Q94 128 88 112 Q82 96 70 92 Z"/>';
+    s += '<path class="muscle-group" onclick="svgMuscleClick(\'Back\')" d="M162 98 Q170 110 172 136 Q172 156 162 166 Q150 174 136 168 Q126 162 126 146 Q126 128 132 112 Q138 96 150 92 Z"/>';
+    // RHOMBOIDS MID BACK
+    s += '<path class="muscle-group" onclick="svgMuscleClick(\'Back\')" d="M92 98 Q100 90 110 90 Q120 90 128 98 Q126 124 120 134 Q115 138 110 138 Q105 138 100 134 Q94 124 92 98 Z"/>';
+    // ERECTOR SPINAE
+    s += '<path class="muscle-group" onclick="svgMuscleClick(\'Back\')" d="M96 140 Q102 136 108 138 Q110 160 110 178 Q106 180 102 178 Q96 170 96 156 Z"/>';
+    s += '<path class="muscle-group" onclick="svgMuscleClick(\'Back\')" d="M124 140 Q118 136 112 138 Q110 160 110 178 Q114 180 118 178 Q124 170 124 156 Z"/>';
+    // HIP
+    s += '<path d="M80 180 Q94 174 110 174 Q126 174 140 180 Q148 188 146 204 Q134 216 110 218 Q86 216 74 204 Q72 188 80 180 Z" fill="#1a1a20" stroke="rgba(255,255,255,0.07)" stroke-width="1"/>';
+    // GLUTES
+    s += '<path class="muscle-group" onclick="svgMuscleClick(\'Glutes\')" d="M76 184 Q64 192 60 212 Q58 228 68 236 Q80 242 94 236 Q104 228 104 212 Q104 196 96 186 Z"/>';
+    s += '<path class="muscle-group" onclick="svgMuscleClick(\'Glutes\')" d="M144 184 Q156 192 160 212 Q162 228 152 236 Q140 242 126 236 Q116 228 116 212 Q116 196 124 186 Z"/>';
+    // Glute line
+    s += '<line x1="110" y1="182" x2="110" y2="234" stroke="rgba(255,255,255,0.05)" stroke-width="1"/>';
+    // HAMSTRINGS
+    s += '<path class="muscle-group" onclick="svgMuscleClick(\'Hamstrings\')" d="M76 238 Q64 248 60 274 Q58 294 66 304 Q76 312 84 304 Q92 294 90 272 Q88 250 80 240 Z"/>';
+    s += '<path class="muscle-group" onclick="svgMuscleClick(\'Hamstrings\')" d="M100 240 Q92 250 90 274 Q90 292 96 302 Q104 308 110 302 Q112 290 110 270 Q108 252 102 242 Z"/>';
+    s += '<path class="muscle-group" onclick="svgMuscleClick(\'Hamstrings\')" d="M144 238 Q156 248 160 274 Q162 294 154 304 Q144 312 136 304 Q128 294 130 272 Q132 250 140 240 Z"/>';
+    s += '<path class="muscle-group" onclick="svgMuscleClick(\'Hamstrings\')" d="M120 240 Q128 250 130 274 Q130 292 124 302 Q116 308 110 302 Q108 290 110 270 Q112 252 118 242 Z"/>';
+    // KNEES
+    s += '<ellipse cx="84" cy="310" rx="12" ry="8" fill="#1a1a20" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>';
+    s += '<ellipse cx="136" cy="310" rx="12" ry="8" fill="#1a1a20" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>';
+    // LEFT CALF back
+    s += '<path class="muscle-group" onclick="svgMuscleClick(\'Calves\')" d="M70 318 Q62 328 62 356 Q64 376 74 384 Q82 390 88 382 Q94 370 92 348 Q90 326 80 318 Z"/>';
+    s += '<path class="muscle-group" onclick="svgMuscleClick(\'Calves\')" d="M94 320 Q88 330 88 356 Q88 374 94 382 Q102 386 106 378 Q108 364 106 344 Q104 326 98 320 Z"/>';
+    // RIGHT CALF back
+    s += '<path class="muscle-group" onclick="svgMuscleClick(\'Calves\')" d="M150 318 Q158 328 158 356 Q156 376 146 384 Q138 390 132 382 Q126 370 128 348 Q130 326 140 318 Z"/>';
+    s += '<path class="muscle-group" onclick="svgMuscleClick(\'Calves\')" d="M126 320 Q132 330 132 356 Q132 374 126 382 Q118 386 114 378 Q112 364 114 344 Q116 326 122 320 Z"/>';
+    // ACHILLES lower leg
+    s += '<path d="M88 386 Q86 410 86 438 Q88 448 92 450 Q96 448 98 438 Q100 414 98 388 Z" fill="#1a1a20" stroke="rgba(255,255,255,0.07)" stroke-width="1"/>';
+    s += '<path d="M132 386 Q134 410 134 438 Q132 448 128 450 Q124 448 122 438 Q120 414 122 388 Z" fill="#1a1a20" stroke="rgba(255,255,255,0.07)" stroke-width="1"/>';
+    // FEET
+    s += '<ellipse cx="91" cy="460" rx="14" ry="8" fill="#1a1a20" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>';
+    s += '<ellipse cx="129" cy="460" rx="14" ry="8" fill="#1a1a20" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>';
+    s += '</svg></div>';
+    return s;
   }
 
-  window.svgMuscleClick = function(muscle) {
-    var info = {
-      'Chest':'Pectoralis Major — horizontal adduction and shoulder flexion. Best exercises: bench press, fly, push-up.',
-      'Front Delts':'Anterior Deltoid — shoulder flexion and internal rotation. Overtrained in most programs due to heavy pressing.',
-      'Rear Delts':'Posterior Deltoid — shoulder extension and external rotation. Most undertrained muscle in lifters. Prioritize face pulls.',
-      'Back':'Latissimus Dorsi / Rhomboids / Erector Spinae — shoulder extension, adduction, spinal stability. Pull-ups and rows.',
-      'Traps':'Trapezius — scapular elevation, retraction, depression. Three distinct regions. Face pulls hit lower and mid traps.',
-      'Biceps':'Biceps Brachii — elbow flexion and forearm supination. Best trained with full extension at the bottom of each rep.',
-      'Triceps':'Triceps Brachii — elbow extension. The largest muscle of the upper arm. Overhead extensions hit the long head best.',
-      'Core':'Rectus Abdominis + Obliques — spinal flexion, rotation, anti-extension. Train anti-extension (plank) for injury prevention.',
-      'Quads':'Quadriceps (4 muscles) — knee extension and hip flexion. Dominant in squats and leg press.',
-      'Hamstrings':'Hamstring complex — knee flexion and hip extension. Most commonly strained muscle in athletes.',
-      'Glutes':'Gluteus Maximus — hip extension and external rotation. Most powerful muscle in the body. Hip thrusts are best.',
-      'Calves':'Gastrocnemius + Soleus — plantarflexion. Gastrocnemius crosses the knee; train with straight legs. Soleus with bent knees.',
-      'Forearms':'Brachioradialis, flexors and extensors — wrist flexion, extension, and grip. Hammer curls and reverse curls hit them directly.'
-    };
-    var d = document.getElementById('svg-muscle-info');
-    if(d) d.innerHTML = '<strong style="color:var(--accent);">'+muscle+'</strong><br><span style="font-size:12px;line-height:1.7;">'+(info[muscle]||muscle)+'</span>';
-  };
 
   function drawNutrition() {
     el.innerHTML = navHtml('nutrition') +
@@ -1999,6 +1945,44 @@ function renderRoutines() {
   drawList();
 }
 
+
+
+function svgMuscleClick(muscle) {
+  var info = {
+      'Chest':'Pectoralis Major — horizontal adduction and shoulder flexion. Best exercises: bench press, fly, push-up.',
+      'Front Delts':'Anterior Deltoid — shoulder flexion and internal rotation. Overtrained in most programs due to heavy pressing.',
+      'Rear Delts':'Posterior Deltoid — shoulder extension and external rotation. Most undertrained muscle in lifters. Prioritize face pulls.',
+      'Back':'Latissimus Dorsi / Rhomboids / Erector Spinae — shoulder extension, adduction, spinal stability. Pull-ups and rows.',
+      'Traps':'Trapezius — scapular elevation, retraction, depression. Three distinct regions. Face pulls hit lower and mid traps.',
+      'Biceps':'Biceps Brachii — elbow flexion and forearm supination. Best trained with full extension at the bottom of each rep.',
+      'Triceps':'Triceps Brachii — elbow extension. The largest muscle of the upper arm. Overhead extensions hit the long head best.',
+      'Core':'Rectus Abdominis + Obliques — spinal flexion, rotation, anti-extension. Train anti-extension (plank) for injury prevention.',
+      'Quads':'Quadriceps (4 muscles) — knee extension and hip flexion. Dominant in squats and leg press.',
+      'Hamstrings':'Hamstring complex — knee flexion and hip extension. Most commonly strained muscle in athletes.',
+      'Glutes':'Gluteus Maximus — hip extension and external rotation. Most powerful muscle in the body. Hip thrusts are best.',
+      'Calves':'Gastrocnemius + Soleus — plantarflexion. Gastrocnemius crosses the knee; train with straight legs. Soleus with bent knees.',
+      'Forearms':'Brachioradialis, flexors and extensors — wrist flexion, extension, and grip. Hammer curls and reverse curls hit them directly.'
+    };
+    var d = document.getElementById('svg-muscle-info');
+    if(d) d.innerHTML = '<strong style="color:var(--accent);">'+muscle+'</strong><br><span style="font-size:12px;line-height:1.7;">'+(info[muscle]||muscle)+'</span>';
+  };
+
+
+function showMuscle(idx) {
+      var m = muscles[idx];
+      muscles.forEach(function(_, i){ var b=document.getElementById('mbtn-'+i); if(b){b.style.background='transparent';b.style.color='var(--muted)';b.style.borderColor='var(--border)';} });
+      var btn = document.getElementById('mbtn-'+idx);
+      if(btn){ btn.style.background=m.color+'33'; btn.style.color=m.color; btn.style.borderColor=m.color; }
+      var d = document.getElementById('muscle-detail');
+      if(d) d.innerHTML = '<strong style="color:'+m.color+';font-size:15px;">'+m.name+'</strong><br>' +
+        '<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:10px 0;font-size:12px;">' +
+        '<div><b style="color:var(--text);">Origin:</b><br>'+m.origin+'</div>' +
+        '<div><b style="color:var(--text);">Insertion:</b><br>'+m.insertion+'</div>' +
+        '</div>' +
+        '<div style="margin-bottom:8px;font-size:12px;"><b style="color:var(--text);">Function:</b> '+m.function+'</div>' +
+        '<div style="margin-bottom:8px;font-size:12px;"><b style="color:var(--text);">Best exercises:</b> '+m.exercises+'</div>' +
+        '<div style="font-size:12px;background:rgba(232,98,74,0.08);border-left:3px solid #e8624a;padding:8px 10px;border-radius:0 6px 6px 0;"><b style="color:#e8624a;">Injury note:</b> '+m.injury+'</div>';
+    };
 
 var renders = {overview:renderOverview,workouts:renderWorkouts,prs:renderPRs,exercises:renderExercises,progress:renderProgress,heatmap:renderHeatmap,tools:renderTools,health:renderHealth,insights:renderInsights,routines:renderRoutines,academy:renderAcademy};
 

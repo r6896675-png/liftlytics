@@ -1,0 +1,14 @@
+{
+  "name": "liftlytics",
+  "version": "1.0.0",
+  "dependencies": {
+    "@supabase/supabase-js": "^2.39.0"
+  }
+}
+```
+
+5. Click **Commit new file**
+
+Vercel will automatically redeploy. Wait about 60 seconds then try:
+```
+https://liftlytics.vercel.app/api/register
